@@ -1233,6 +1233,10 @@ function diaspora_reshare($importer,$xml,$msg) {
 		return 202;
 	}
 
+	if(! post_is_importable($datarray,$contact)) {
+		logger('diaspora_post: filtering this author.');
+		return 202;
+	}
 
 	$result = item_store($datarray);
 
