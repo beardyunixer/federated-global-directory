@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 2015-11-20.1222\n"
+"Project-Id-Version: 2016-01-22.1285\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-20 00:03-0800\n"
+"POT-Creation-Date: 2016-01-22 00:04-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -205,7 +205,7 @@ msgid "Registration request at %s"
 msgstr ""
 
 #: ../../include/account.php:314 ../../include/account.php:341
-#: ../../include/account.php:401 ../../include/network.php:1632
+#: ../../include/account.php:401 ../../include/network.php:1647
 msgid "Administrator"
 msgstr ""
 
@@ -416,7 +416,7 @@ msgstr ""
 msgid "Edited"
 msgstr ""
 
-#: ../../include/api.php:1267
+#: ../../include/api.php:1178
 msgid "Public Timeline"
 msgstr ""
 
@@ -713,30 +713,30 @@ msgstr ""
 msgid "%1$s's bookmarks"
 msgstr ""
 
-#: ../../include/network.php:635
+#: ../../include/network.php:650
 msgid "view full size"
 msgstr ""
 
-#: ../../include/network.php:1585 ../../include/enotify.php:58
+#: ../../include/network.php:1600 ../../include/enotify.php:58
 msgid "$Projectname Notification"
 msgstr ""
 
-#: ../../include/network.php:1586 ../../include/enotify.php:59
-#: ../../include/diaspora.php:2522 ../../include/diaspora.php:2533
+#: ../../include/network.php:1601 ../../include/enotify.php:59
+#: ../../include/diaspora.php:2526 ../../include/diaspora.php:2537
 #: ../../mod/p.php:46
 msgid "$projectname"
 msgstr ""
 
-#: ../../include/network.php:1588 ../../include/enotify.php:61
+#: ../../include/network.php:1603 ../../include/enotify.php:61
 msgid "Thank You,"
 msgstr ""
 
-#: ../../include/network.php:1590 ../../include/enotify.php:63
+#: ../../include/network.php:1605 ../../include/enotify.php:63
 #, php-format
 msgid "%s Administrator"
 msgstr ""
 
-#: ../../include/network.php:1646
+#: ../../include/network.php:1661
 msgid "No Subject"
 msgstr ""
 
@@ -1409,38 +1409,38 @@ msgstr ""
 msgid "Stored post could not be verified."
 msgstr ""
 
-#: ../../include/diaspora.php:2119 ../../include/conversation.php:120
+#: ../../include/diaspora.php:2123 ../../include/conversation.php:120
 #: ../../include/text.php:1896 ../../mod/like.php:349
 #: ../../mod/subthread.php:72 ../../mod/subthread.php:174
 #: ../../mod/tagger.php:43
 msgid "photo"
 msgstr ""
 
-#: ../../include/diaspora.php:2119 ../../include/conversation.php:148
+#: ../../include/diaspora.php:2123 ../../include/conversation.php:148
 #: ../../include/text.php:1902 ../../mod/like.php:349
 #: ../../mod/subthread.php:72 ../../mod/subthread.php:174
 msgid "status"
 msgstr ""
 
-#: ../../include/diaspora.php:2148 ../../include/conversation.php:164
+#: ../../include/diaspora.php:2152 ../../include/conversation.php:164
 #: ../../mod/like.php:397
 #, php-format
 msgid "%1$s likes %2$s's %3$s"
 msgstr ""
 
-#: ../../include/diaspora.php:2494
+#: ../../include/diaspora.php:2498
 msgid "Please choose"
 msgstr ""
 
-#: ../../include/diaspora.php:2496
+#: ../../include/diaspora.php:2500
 msgid "Agree"
 msgstr ""
 
-#: ../../include/diaspora.php:2498
+#: ../../include/diaspora.php:2502
 msgid "Disagree"
 msgstr ""
 
-#: ../../include/diaspora.php:2500
+#: ../../include/diaspora.php:2504
 msgid "Abstain"
 msgstr ""
 
@@ -2684,7 +2684,7 @@ msgstr[1] ""
 
 #: ../../include/items.php:413 ../../mod/like.php:273
 #: ../../mod/subthread.php:49 ../../mod/group.php:68 ../../mod/profperm.php:23
-#: ../../mod/bulksetclose.php:11 ../../index.php:392
+#: ../../mod/bulksetclose.php:11 ../../index.php:396
 msgid "Permission denied"
 msgstr ""
 
@@ -2771,7 +2771,7 @@ msgstr ""
 #: ../../mod/channel.php:100 ../../mod/channel.php:219
 #: ../../mod/channel.php:262 ../../mod/suggest.php:26
 #: ../../mod/service_limits.php:7 ../../mod/sharedwithme.php:7
-#: ../../index.php:182 ../../index.php:393
+#: ../../index.php:186 ../../index.php:397
 msgid "Permission denied."
 msgstr ""
 
@@ -4301,7 +4301,7 @@ msgid "Channel not found."
 msgstr ""
 
 #: ../../mod/block.php:75 ../../mod/display.php:110 ../../mod/help.php:79
-#: ../../mod/page.php:89 ../../index.php:241
+#: ../../mod/page.php:89 ../../index.php:245
 msgid "Page not found."
 msgstr ""
 
@@ -7456,7 +7456,7 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: ../../mod/help.php:76 ../../index.php:238
+#: ../../mod/help.php:76 ../../index.php:242
 msgid "Not Found"
 msgstr ""
 
