@@ -74,10 +74,10 @@ define ( 'DIRECTORY_MODE_STANDALONE',  0x0100);
 // point to go out and find the rest of the world.
 
 define ( 'DIRECTORY_REALM',            'RED_GLOBAL');
-define ( 'DIRECTORY_FALLBACK_MASTER',  'https://zothub.com');
+define ( 'DIRECTORY_FALLBACK_MASTER',  'https://hubzilla.site');
 
 $DIRECTORY_FALLBACK_SERVERS = array( 
-	'https://zothub.com', 
+	'https://hubzilla.site', 
 	'https://zotid.net', 
 	'https://hubzilla.zottel.net',
 	'https://gravizot.de',
