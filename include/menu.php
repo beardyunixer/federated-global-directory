@@ -7,6 +7,7 @@ function menu_fetch($name,$uid,$observer_xchan) {
 
 	$sql_options = permissions_sql($uid);
 
+
 	$r = q("select * from menu where menu_channel_id = %d and menu_name = '%s' limit 1",
 		intval($uid),
 		dbesc($name)
@@ -34,11 +35,11 @@ function menu_element($menu) {
 	$arr['edited'] = $menu['menu']['menu_edited'];
 
 	$arr['baseurl'] = z_root();
-	if($menu['menu_flags']) {
+	if($menu['menu']['menu_flags']) {
 		$arr['flags'] = array();
-		if($menu['menu_flags'] & MENU_BOOKMARK)
+		if($menu['menu']['menu_flags'] & MENU_BOOKMARK)
 			$arr['flags'][] = 'bookmark';
-		if($menu['menu_flags'] & MENU_SYSTEM)
+		if($menu['menu']['menu_flags'] & MENU_SYSTEM)
 			$arr['flags'][] = 'system';
 	}
 	if($menu['items']) {
