@@ -76,12 +76,13 @@ define ( 'DIRECTORY_MODE_STANDALONE',  0x0100);
 define ( 'DIRECTORY_REALM',            'RED_GLOBAL');
 define ( 'DIRECTORY_FALLBACK_MASTER',  'https://hubzilla.site');
 
-$DIRECTORY_FALLBACK_SERVERS = array( 
-	'https://hubzilla.site', 
-	'https://zotid.net', 
-	'https://hubzilla.zottel.net',
-	'https://gravizot.de',
-	'https://my.federated.social',
+$DIRECTORY_FALLBACK_SERVERS = array(
+    'https://hubzilla.site',
+    'https://hubzilla.zottel.net',
+    'https://hub.pixelbits.de',
+    'https://my.federated.social',
+    'https://hubzilla.nl',
+    'https://blablanet.es'
 );
 
 
