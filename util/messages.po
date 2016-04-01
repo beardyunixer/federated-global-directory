@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 2016-03-25.1348\n"
+"Project-Id-Version: 2016-04-01.1355\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-25 00:04-0700\n"
+"POT-Creation-Date: 2016-04-01 00:04-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "Profile Photos"
 msgstr ""
 
-#: ../../include/menu.php:107 ../../include/page_widgets.php:8
+#: ../../include/menu.php:108 ../../include/page_widgets.php:8
 #: ../../include/page_widgets.php:36 ../../include/RedDAV/RedBrowser.php:266
 #: ../../include/ItemObject.php:100 ../../include/apps.php:254
 #: ../../mod/webpages.php:181 ../../mod/thing.php:255
@@ -78,7 +78,7 @@ msgstr ""
 
 #: ../../include/contact_selectors.php:79 ../../mod/admin.php:822
 #: ../../mod/admin.php:831 ../../mod/id.php:15 ../../mod/id.php:16
-#: ../../boot.php:1552
+#: ../../boot.php:1553
 msgid "Email"
 msgstr ""
 
@@ -256,7 +256,7 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#: ../../include/datetime.php:262 ../../boot.php:2357
+#: ../../include/datetime.php:262 ../../boot.php:2358
 msgid "never"
 msgstr ""
 
@@ -353,7 +353,7 @@ msgstr ""
 #: ../../mod/settings.php:579 ../../mod/removeme.php:60
 #: ../../mod/connedit.php:647 ../../mod/connedit.php:675
 #: ../../view/theme/redbasic/php/config.php:104
-#: ../../view/theme/redbasic/php/config.php:129 ../../boot.php:1554
+#: ../../view/theme/redbasic/php/config.php:129 ../../boot.php:1555
 msgid "No"
 msgstr ""
 
@@ -365,7 +365,7 @@ msgstr ""
 #: ../../mod/filestorage.php:159 ../../mod/admin.php:430
 #: ../../mod/settings.php:579 ../../mod/removeme.php:60
 #: ../../view/theme/redbasic/php/config.php:104
-#: ../../view/theme/redbasic/php/config.php:129 ../../boot.php:1554
+#: ../../view/theme/redbasic/php/config.php:129 ../../boot.php:1555
 msgid "Yes"
 msgstr ""
 
@@ -1742,7 +1742,7 @@ msgstr ""
 msgid "$Projectname event notification:"
 msgstr ""
 
-#: ../../include/nav.php:87 ../../include/nav.php:120 ../../boot.php:1549
+#: ../../include/nav.php:87 ../../include/nav.php:120 ../../boot.php:1550
 msgid "Logout"
 msgstr ""
 
@@ -1822,7 +1822,7 @@ msgstr ""
 msgid "Your webpages"
 msgstr ""
 
-#: ../../include/nav.php:117 ../../include/apps.php:131 ../../boot.php:1550
+#: ../../include/nav.php:117 ../../include/apps.php:131 ../../boot.php:1551
 msgid "Login"
 msgstr ""
 
@@ -1847,7 +1847,7 @@ msgstr ""
 msgid "Home Page"
 msgstr ""
 
-#: ../../include/nav.php:155 ../../mod/register.php:224 ../../boot.php:1526
+#: ../../include/nav.php:155 ../../mod/register.php:224 ../../boot.php:1527
 msgid "Register"
 msgstr ""
 
@@ -5391,7 +5391,7 @@ msgid ""
 "Password reset failed."
 msgstr ""
 
-#: ../../mod/lostpass.php:86 ../../boot.php:1558
+#: ../../mod/lostpass.php:86 ../../boot.php:1559
 msgid "Password Reset"
 msgstr ""
 
@@ -9104,51 +9104,51 @@ msgstr ""
 msgid "Set size of followup author photos"
 msgstr ""
 
-#: ../../boot.php:1355
+#: ../../boot.php:1356
 #, php-format
 msgid "Update %s failed. See error logs."
 msgstr ""
 
-#: ../../boot.php:1358
+#: ../../boot.php:1359
 #, php-format
 msgid "Update Error at %s"
 msgstr ""
 
-#: ../../boot.php:1525
+#: ../../boot.php:1526
 msgid ""
 "Create an account to access services and applications within the Red Matrix"
 msgstr ""
 
-#: ../../boot.php:1553
+#: ../../boot.php:1554
 msgid "Password"
 msgstr ""
 
-#: ../../boot.php:1554
+#: ../../boot.php:1555
 msgid "Remember me"
 msgstr ""
 
-#: ../../boot.php:1557
+#: ../../boot.php:1558
 msgid "Forgot your password?"
 msgstr ""
 
-#: ../../boot.php:2181
+#: ../../boot.php:2182
 msgid "toggle mobile"
 msgstr ""
 
-#: ../../boot.php:2316
+#: ../../boot.php:2317
 msgid "Website SSL certificate is not valid. Please correct."
 msgstr ""
 
-#: ../../boot.php:2319
+#: ../../boot.php:2320
 #, php-format
 msgid "[red] Website SSL error for %s"
 msgstr ""
 
-#: ../../boot.php:2356
+#: ../../boot.php:2357
 msgid "Cron/Scheduled tasks not running."
 msgstr ""
 
-#: ../../boot.php:2360
+#: ../../boot.php:2361
 #, php-format
 msgid "[red] Cron tasks not running on %s"
 msgstr ""
