@@ -15,7 +15,7 @@ function zfinger_init(&$a) {
 	$zsig      = ((x($_REQUEST,'target_sig')) ? $_REQUEST['target_sig']  : '');
 	$zkey      = ((x($_REQUEST,'key'))        ? $_REQUEST['key']         : '');
 	$mindate   = ((x($_REQUEST,'mindate'))    ? $_REQUEST['mindate']     : '');
-	$token     = ((x($_REQUEST,'token'))      ? $_REQUEST['token'])      : '');
+	$token     = ((x($_REQUEST,'token'))      ? $_REQUEST['token']      : '');
 	$feed      = ((x($_REQUEST,'feed'))       ? intval($_REQUEST['feed']) : 0);
 
 	if($ztarget) {
