@@ -15,6 +15,7 @@ function zfinger_init(&$a) {
 	$zsig      = ((x($_REQUEST,'target_sig')) ? $_REQUEST['target_sig']  : '');
 	$zkey      = ((x($_REQUEST,'key'))        ? $_REQUEST['key']         : '');
 	$mindate   = ((x($_REQUEST,'mindate'))    ? $_REQUEST['mindate']     : '');
+	$token     = ((x($_REQUEST,'token'))      ? $_REQUEST['token'])      : '');
 	$feed      = ((x($_REQUEST,'feed'))       ? intval($_REQUEST['feed']) : 0);
 
 	if($ztarget) {
@@ -173,7 +174,10 @@ function zfinger_init(&$a) {
 
 	$ret['success'] = true;
 
+
 	// Communication details
+	if($token) 
+		$ret['signed_token'] = base64url_encode(rsa_sign($token,$e['channel_prvkey']));
 
 	$ret['guid']           = $e['xchan_guid'];
 	$ret['guid_sig']       = $e['xchan_guid_sig'];
