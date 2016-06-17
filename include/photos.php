@@ -375,7 +375,7 @@ function photos_album_widget($channelx,$observer,$albums = null) {
  * @param string $album default empty
  * @return boolean|array
  */
-function photos_list_photos($channel, $observer, $album = '') {
+function photos_list_photos($channel, $observer, $album = '',$scale = '') {
 
 	$channel_id     = $channel['channel_id'];
 	$observer_xchan = (($observer) ? $observer['xchan_hash'] : '');
@@ -387,6 +387,8 @@ function photos_list_photos($channel, $observer, $album = '') {
 
 	if($album)
 		$sql_extra .= " and album = '" . protect_sprintf(dbesc($album)) . "' "; 
+	if($scale != '')
+		$sql_extra .= " and scale = '" . intval($scale) . "' "; 
 
 	$ret = array('success' => false);
 

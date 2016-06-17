@@ -571,7 +571,8 @@ require_once('include/api_auth.php');
 
 	function api_photos(&$a,$type) {
 		$album = $_REQUEST['album'];
-		json_return_and_die(photos_list_photos($a->get_channel(),$a->get_observer(),$album));
+		$scale = ((array_key_exists('scale',$_REQUEST)) ? intval($_REQUEST['scale']) : '');
+		json_return_and_die(photos_list_photos($a->get_channel(),$a->get_observer(),$album,$scale));
 	}
 	api_register_func('api/red/photos','api_photos', true);
 
@@ -579,16 +580,19 @@ require_once('include/api_auth.php');
 		if (api_user()===false) return false;
 		if(! $_REQUEST['photo_id']) return false;
 		$scale = ((array_key_exists('scale',$_REQUEST)) ? intval($_REQUEST['scale']) : 0);
-		$r = q("select * from photo where uid = %d and resource_id = '%s' and scale = %d limit 1",
+		$r = q("select id,aid,uid,xchan,resource_id,created,edited,title,description,album,filename,`type`,height,width,`size`,`scale`,profile,photo_flags,allow_cid,allow_gid,deny_cid,deny_gid from photo where uid = %d and resource_id = '%s' and scale = %d limit 1",
 			intval(local_channel()),
 			dbesc($_REQUEST['photo_id']),
 			intval($scale)
 		);
 		if($r) {
-            $data = dbunescbin($r[0]['data']);
-			if(array_key_exists('os_storage',$r[0]) && intval($r[0]['os_storage']))
-				$data = file_get_contents($data);
-			$r[0]['data'] = base64_encode($data);
+			unset($r[0]['data']);
+//            $data = dbunescbin($r[0]['data']);
+//			if(array_key_exists('os_storage',$r[0]) && intval($r[0]['os_storage']))
+//				$data = file_get_contents($data);
+//			$r[0]['data'] = base64_encode($data);
+			$r[0]['src'] = z_root() . '/photo/' . $r[0]['resource_id'] . '-' . $r[0]['scale'];
+
 			$ret = array('photo' => $r[0]);
 			$i = q("select id from item where uid = %d and resource_type = 'photo' and resource_id = '%s' limit 1",
 				intval(local_channel()),
@@ -615,6 +619,27 @@ require_once('include/api_auth.php');
 	}
 
 	api_register_func('api/red/photo', 'api_photo_detail', true);
+
+	function api_get_photo(&$a,$type) {
+		if (api_user()===false) return false;
+		if(! $_REQUEST['photo_id']) return false;
+		$scale = ((array_key_exists('scale',$_REQUEST)) ? intval($_REQUEST['scale']) : 0);
+
+		$r = q("select data from photo where uid = %d and resource_id = '%s' and scale = %d limit 1",
+			intval(local_channel()),
+			dbesc($_REQUEST['photo_id']),
+			intval($scale)
+		);
+		if($r) {
+            $data = dbunescbin($r[0]['data']);
+			header("Content-type: $type");
+			echo $data;
+			killme();
+		}
+		killme();
+	}
+
+	api_register_func('api/red/getphoto', 'api_get_photo', true);
 
 
 	function api_group_members(&$a,$type) {
