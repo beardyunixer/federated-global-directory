@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 2016-05-20.1404\n"
+"Project-Id-Version: 2016-06-17.1432\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-20 00:01-0700\n"
+"POT-Creation-Date: 2016-06-17 00:01-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1465,7 +1465,7 @@ msgstr ""
 msgid "%1$s has an updated %2$s, changing %3$s."
 msgstr ""
 
-#: ../../include/api.php:1178
+#: ../../include/api.php:1203
 msgid "Public Timeline"
 msgstr ""
 
@@ -8832,7 +8832,7 @@ msgstr ""
 msgid "Lookup xchan beginning with (or webbie): "
 msgstr ""
 
-#: ../../mod/zfinger.php:23
+#: ../../mod/zfinger.php:24
 msgid "invalid target signature"
 msgstr ""
 

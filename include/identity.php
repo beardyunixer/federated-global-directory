@@ -489,6 +489,8 @@ function identity_basic_export($channel_id, $items = false) {
 	if($r)
 		$ret['channel'] = $r[0];
 
+	$ret['relocate'] = array('url' => z_root(),'channel_address' => $ret['channel']['channel_address']);
+
 	$r = q("select * from profile where uid = %d",
 		intval($channel_id)
 	);
@@ -689,6 +691,12 @@ function identity_export_year($channel_id,$year,$month = 0) {
 		$target_month = '01';
 
 	$ret = array();
+
+	require_once('include/Contact.php');
+	$x = channelx_by_n($channel_id);
+	if($x) 
+		$ret['relocate'] = array('url' => z_root(),'channel_address' => $x['channel_address']);
+
 
 	$mindate = datetime_convert('UTC','UTC',$year . '-' . $target_month . '-01 00:00:00');
 	if($month && $month < 12)
