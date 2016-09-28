@@ -222,9 +222,9 @@ function dbg($state) {
 function dbesc($str) {
 	global $db;
 
-	if(ACTIVE_DBTYPE == DBTYPE_POSTGRES && $str == '0000-00-00 00:00:00') {
+	if(ACTIVE_DBTYPE == DBTYPE_POSTGRES && $str === '0000-00-00 00:00:00') {
 		$str = NULL_DATE;
-	} else if(ACTIVE_DBTYPE != DBTYPE_POSTGRES && $str == '0001-01-01 00:00:00') {
+	} else if(ACTIVE_DBTYPE != DBTYPE_POSTGRES && $str === '0001-01-01 00:00:00') {
 		$str = NULL_DATE;
 	}
 
@@ -244,9 +244,9 @@ function dbunescbin($str) {
 }
 
 function dbescdate($date) {
-	if(ACTIVE_DBTYPE == DBTYPE_POSTGRES && $date == '0000-00-00 00:00:00') {
+	if(ACTIVE_DBTYPE == DBTYPE_POSTGRES && $date === '0000-00-00 00:00:00') {
 		$date = NULL_DATE;
-	} else if(ACTIVE_DBTYPE != DBTYPE_POSTGRES && $date == '0001-01-01 00:00:00') {
+	} else if(ACTIVE_DBTYPE != DBTYPE_POSTGRES && $date === '0001-01-01 00:00:00') {
 		$date = NULL_DATE;
 	}
 	return $date;
