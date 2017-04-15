@@ -20,7 +20,7 @@ function home_init(&$a) {
 		if(! $dest)
 			$dest = get_config('system','startpage');
 		if(! $dest)
-			$dest = z_root() . '/network';
+			$dest = z_root() . '/apps';
 
 		goaway($dest);
 	}
