@@ -73,16 +73,11 @@ define ( 'DIRECTORY_MODE_STANDALONE',  0x0100);
 // a standalone hub, we need to seed the service with a starting
 // point to go out and find the rest of the world.
 
-define ( 'DIRECTORY_REALM',            'RED_GLOBAL');
-define ( 'DIRECTORY_FALLBACK_MASTER',  'https://hub.pixelbits.de');
+define ( 'DIRECTORY_REALM',            'INTERNET');
+define ( 'DIRECTORY_FALLBACK_MASTER',  'https://beardyunixer.com');
 
 $DIRECTORY_FALLBACK_SERVERS = array(
-    'https://hubzilla.site',
-    'https://hubzilla.zottel.net',
-    'https://hub.pixelbits.de',
-    'https://my.federated.social',
-    'https://hubzilla.nl',
-    'https://blablanet.es'
+    'https://beardyunixer.com'
 );
 
 
