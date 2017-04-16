@@ -515,8 +515,6 @@ function bbcode($Text, $preserve_nl = false, $tryoembed = true) {
 
 	// replace [observer.baseurl]
 	if ($observer) {
-		$s1 = '<span class="bb_observer" title="' . t('Different viewers will see this text differently') . '">';
-		$s2 = '</span>';
 		$obsBaseURL = $observer['xchan_connurl'];
 		$obsBaseURL = preg_replace("/\/poco\/.*$/", '', $obsBaseURL);
 		$Text = str_replace('[observer.baseurl]', $obsBaseURL, $Text);
