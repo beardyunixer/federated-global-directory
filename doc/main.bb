@@ -74,10 +74,9 @@ Zot is the great new communicaton protocol invented especially for the $Projectn
 
 [h3]External Resources[/h3]
 [zrl=[baseurl]/help/external-resource-links]External Resource Links[/zrl]
-[url=https://github.com/redmatrix/redmatrix]Main Website[/url]
-[url=https://github.com/redmatrix/redmatrix-addons]Addon Website[/url]
-[url=https://zothub.com/channel/one]Development Channel[/url]
-[url=https://federated.social/channel/postgres]Postgres-specific $Projectname Admin Support Channel[/url]
+[url=https://github.com/beardyunixer/redmatrix]Main Website[/url]
+[url=https://github.com/beardyunixer/redmatrix-addons]Addon Website[/url]
+[url=https://beardyunixer.com/channel/support]Support Channel[/url]
 
 [url=[baseurl]/help/credits]$Projectname Credits[/url]
 
