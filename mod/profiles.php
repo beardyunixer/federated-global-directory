@@ -533,6 +533,9 @@ function profiles_post(&$a) {
 			intval(local_channel())
 		);
 
+		if (is_sys_channel(local_user()))
+			set_config('system','sitename',dbesc($name));
+
 		if($r)
 			info( t('Profile updated.') . EOL);
 
