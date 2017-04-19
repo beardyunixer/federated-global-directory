@@ -1,6 +1,6 @@
 [b]Developer Guidelines[/b]
 
-We're pretty relaxed when it comes to developers, mostly, because we haven't got any, but we might get some when this becomes an actual product and we open source the engine, so we still need some guidelines.
+We're pretty relaxed when it comes to developers, mostly, because we haven't got any, but we might get some one day.
 
 [b]Code Style[/b]
 
