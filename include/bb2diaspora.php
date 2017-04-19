@@ -103,7 +103,7 @@ function diaspora_mention_callback($matches) {
 	if(! $link)
 		$link = 'https://' . $matches[3] . '/u/' . $matches[2];
 
-	if($r && $r[0]['hubloc_network'] === 'zot')
+	if($r && $r[0]['hubloc_network'] === 'zot' || $r[0]['hubloc_network'] == 'friendica-over-diaspora')
 		return '@[zrl=' . $link . ']' . trim($matches[1]) . ((substr($matches[0],-1,1) === '+') ? '+' : '') . '[/zrl]' ;
 	else
 		return '@[url=' . $link . ']' . trim($matches[1]) . ((substr($matches[0],-1,1) === '+') ? '+' : '') . '[/url]' ;
