@@ -11,6 +11,7 @@
 {{/foreach}}
 
 <div class="directory-end"></div>
-{{$next}}
 
+<div class="clear"></div>
+{{$next}}
 </div>

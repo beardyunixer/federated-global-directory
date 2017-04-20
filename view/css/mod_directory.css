@@ -6,6 +6,10 @@
 
 .directory-item {
 	margin-bottom: 20px;
+	height: 180px;
+	margin: 8px;
+	width: 80px;
+	float: left;
 }
 
 .contact-photo-wrapper {
