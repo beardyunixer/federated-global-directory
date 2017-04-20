@@ -24,5 +24,4 @@ function zping_content(&$a) {
 	$m = zot_build_packet($a->get_channel(),'ping');
 	$r = zot_zot($url,$m);
 	return print_r($r,true);
-
 }
