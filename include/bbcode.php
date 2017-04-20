@@ -660,6 +660,10 @@ function bbcode($Text, $preserve_nl = false, $tryoembed = true) {
 	}
 	// Check for list text
 	$Text = str_replace("[*]", "<li>", $Text);
+	// Check for footers
+	if (strpos($Text,'[/footer]') !== false) {
+		$Text = preg_replace("(\[footer\](.*?)\[\/footer\])ism", "<div class=\"wall-item-footer\">$1</div>", $Text);
+	}
 
  	// handle nested lists
 	$endlessloop = 0;
