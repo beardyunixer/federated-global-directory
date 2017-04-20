@@ -29,9 +29,6 @@ apps/
 home.html
 # Ignore site TOS
 doc/SiteTOS.md
-# themes except for redbasic
-view/theme/*
-! view/theme/redbasic
 # site theme schemas
 view/theme/redbasic/schema/default.php
 # Doxygen API documentation, run 'doxygen util/Doxyfile' to generate it

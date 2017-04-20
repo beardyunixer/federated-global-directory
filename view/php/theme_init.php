@@ -6,9 +6,9 @@ head_add_css('library/tiptip/tipTip.css');
 head_add_css('library/jgrowl/jquery.jgrowl.css');
 head_add_css('library/jRange/jquery.range.css');
 
-head_add_css('view/css/conversation.css');
-head_add_css('view/css/widgets.css');
-head_add_css('view/css/colorbox.css');
+head_add_css('view/theme/redbasic/css/conversation.css');
+head_add_css('view/theme/redbasic/css/widgets.css');
+head_add_css('view/theme/redbasic/css/colorbox.css');
 head_add_css('library/justifiedGallery/justifiedGallery.min.css');
 
 head_add_js('jquery.js');

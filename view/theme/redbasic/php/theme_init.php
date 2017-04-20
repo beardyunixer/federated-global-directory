@@ -3,7 +3,7 @@
 head_add_css('library/font_awesome/css/font-awesome.min.css');
 head_add_css('library/bootstrap/css/bootstrap.min.css');
 head_add_css('library/bootstrap-tagsinput/bootstrap-tagsinput.css');
-head_add_css('view/css/bootstrap-red.css');
+head_add_css('view/theme/redbasic/css/bootstrap-red.css');
 head_add_css('library/datetimepicker/jquery.datetimepicker.css');
 //head_add_css('library/colorpicker/css/colorpicker.css');
 head_add_css('library/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css');
