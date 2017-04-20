@@ -1603,10 +1603,8 @@ function get_account_id() {
  * @return int|bool channel_id or false
  */
 function local_channel() {
-	if((x($_SESSION, 'authenticated')) && (x($_SESSION, 'uid')))
-		return intval($_SESSION['uid']);
-
-	return false;
+	logger('local_channel() is DEPRECATED, use local_user()');
+	return local_user();
 }
 
 /**
@@ -1616,8 +1614,9 @@ function local_channel() {
  * @see local_channel()
  */
 function local_user() {
-	logger('local_user() is DEPRECATED, use local_channel()');
-	return local_channel();
+	if((x($_SESSION, 'authenticated')) && (x($_SESSION, 'uid')))
+		return intval($_SESSION['uid']);
+	return false;
 }
 
 
@@ -1634,10 +1633,8 @@ function local_user() {
  * @return string|bool visitor_id or false
  */
 function remote_channel() {
-	if((x($_SESSION, 'authenticated')) && (x($_SESSION, 'visitor_id')))
-		return $_SESSION['visitor_id'];
-
-	return false;
+	logger('remote_user() is DEPRECATED, use remote_user()');
+	return remote_user();
 }
 
 /**
@@ -1647,8 +1644,10 @@ function remote_channel() {
  * @see remote_channel()
  */
 function remote_user() {
-	logger('remote_user() is DEPRECATED, use remote_channel()');
-	return remote_channel();
+	if((x($_SESSION, 'authenticated')) && (x($_SESSION, 'visitor_id')))
+		return $_SESSION['visitor_id'];
+
+	return false;
 }
 
 
