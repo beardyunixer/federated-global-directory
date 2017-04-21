@@ -1464,6 +1464,10 @@ function scrape_vcard($url) {
 					|| (attribute_contains($x->getAttribute('class'),'uid'))) {
 					$ret['nick'] = $x->textContent;
 				}
+				if((attribute_contains($x->getAttribute('class'),'vcard-short-addr'))
+					|| (attribute_contains($x->getAttribute('class'),'vcard-short-addr'))) {
+					$ret['webbie'] = $x->textContent;
+				}
 				if(attribute_contains($x->getAttribute('class'),'searchable')) {
 					$ret['searchable'] = $x->textContent;
 				}
