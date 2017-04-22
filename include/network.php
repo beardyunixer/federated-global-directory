@@ -1190,7 +1190,7 @@ function discover_by_webbie($webbie) {
 		//FIXME - we still need to create an update record when updated evaluates to true
 		// which never happens at all yet, but should.
 
-		$r = q("select xchan_flags, xchan_photo_l from xchan where xchan_hash = '%s'",
+		$r = q("select xchan_hash,xchan_flags, xchan_photo_l from xchan where xchan_hash = '%s'",
 				dbesc($addr)
 			);
 		
@@ -1219,7 +1219,7 @@ function discover_by_webbie($webbie) {
 		$updated = 1;
 
 	if(($dirmode === DIRECTORY_MODE_SECONDARY || $dirmode === DIRECTORY_MODE_PRIMARY) && ($updated = 1)) {
-			//dirsync_friendica($addr);
+			//dirsync_friendica($r[0]['xchan_hash']);
 	}
   
    return true;
