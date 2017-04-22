@@ -80,6 +80,9 @@ $DIRECTORY_FALLBACK_SERVERS = array(
     'https://beardyunixer.com'
 );
 
+$FRIENDICA_DIRECTORY_SERVERS = array( 
+	'placeholder'
+);
 
 /**
  *
