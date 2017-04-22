@@ -1185,14 +1185,21 @@ function discover_by_webbie($webbie) {
 					intval(HUBLOC_FLAGS_PRIMARY)
 				);
 			}
+
 		$updated = false;
 		//FIXME - we still need to create an update record when updated evaluates to true
 		// which never happens at all yet, but should.
 
+		$r = q("select xchan_flags, xchan_photo_l from xchan where xchan_hash = '%s'",
+				dbesc($addr)
+			);
+		
 		if($vcard['searchable'] == 'false')
 			$hidden = intval(XCHAN_FLAGS_HIDDEN);
 		else
 			$hidden = intval(XCHAN_FLAGS_NORMAL);
+		if ($r[0]['xchan_flags'] != $hidden)
+			$updated = 1;
 
 		$x = q("update xchan set xchan_flags = '%d' where xchan_hash = '%s'",
 				intval($hidden),
@@ -1208,8 +1215,15 @@ function discover_by_webbie($webbie) {
 				dbesc($photos[3]),
 				dbesc($addr)
 			);
-			return true;
-		}
+	if ($r[0]['xchan_photo_l'] != $photos[0]) 
+		$updated = 1;
+
+	if(($dirmode === DIRECTORY_MODE_SECONDARY || $dirmode === DIRECTORY_MODE_PRIMARY) && ($updated = 1)) {
+			//dirsync_friendica($addr);
+	}
+  
+   return true;
+   }
 
 	return false;
 
