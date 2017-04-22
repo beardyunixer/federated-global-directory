@@ -1127,7 +1127,7 @@ function discover_by_webbie($webbie) {
 		}
 
 		if($diaspora && $diaspora_base && $diaspora_guid) {
-			$guid = $diaspora_guid;
+				$guid = $diaspora_guid;
 			$diaspora_base = trim($diaspora_base,'/');
 
 			$notify = $diaspora_base . '/receive';
@@ -1185,15 +1185,22 @@ function discover_by_webbie($webbie) {
 					intval(HUBLOC_FLAGS_PRIMARY)
 				);
 			}
-			// FIXME
-			$xchan_flags = '';
-			if($vcard['searchable'] == 'false')
-				$r = q("update xchan set xchan_flags = '1' where xchan_hash = '%s'",
-					dbesc($addr)
-			);
+		$updated = false;
+		//FIXME - we still need to create an update record when updated evaluates to true
+		// which never happens at all yet, but should.
 
-			$photos = import_profile_photo($vcard['photo'],$addr);
-			$r = q("update xchan set xchan_photo_date = '%s', xchan_photo_l = '%s', xchan_photo_m = '%s', xchan_photo_s = '%s', xchan_photo_mimetype = '%s' where xchan_hash = '%s'",
+		if($vcard['searchable'] == 'false')
+			$hidden = intval(XCHAN_FLAGS_HIDDEN);
+		else
+			$hidden = intval(XCHAN_FLAGS_NORMAL);
+
+		$x = q("update xchan set xchan_flags = '%d' where xchan_hash = '%s'",
+				intval($hidden),
+				dbesc($addr)
+		);
+
+	$photos = import_profile_photo($vcard['photo'],$addr);
+	$photo = q("update xchan set xchan_photo_date = '%s', xchan_photo_l = '%s', xchan_photo_m = '%s', xchan_photo_s = '%s', xchan_photo_mimetype = '%s' where xchan_hash = '%s'",
 				dbescdate(datetime_convert('UTC','UTC',$arr['photo_updated'])),
 				dbesc($photos[0]),
 				dbesc($photos[1]),
@@ -1202,7 +1209,6 @@ function discover_by_webbie($webbie) {
 				dbesc($addr)
 			);
 			return true;
-
 		}
 
 	return false;
