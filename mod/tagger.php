@@ -7,7 +7,7 @@ require_once('include/items.php');
 
 function tagger_content(&$a) {
 
-	if(! local_channel() && ! remote_channel()) {
+	if(! local_user() && ! remote_channel()) {
 		return;
 	}
 
@@ -25,7 +25,7 @@ function tagger_content(&$a) {
 
 	$r = q("SELECT * FROM item left join xchan on xchan_hash = author_xchan WHERE id = '%s' and uid = %d LIMIT 1",
 		dbesc($item_id),
-		intval(local_channel())
+		intval(local_user())
 	);
 
 	if((! $item_id) || (! $r)) {

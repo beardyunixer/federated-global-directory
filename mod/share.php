@@ -10,7 +10,7 @@ function share_init(&$a) {
 	if(! $post_id)
 		killme();
 
-	if(! (local_channel() || remote_channel()))
+	if(! (local_user() || remote_channel()))
 		killme();
 
 	$r = q("SELECT * from item left join xchan on author_xchan = xchan_hash WHERE id = %d  LIMIT 1",
@@ -37,7 +37,7 @@ function share_init(&$a) {
 	/** @FIXME eventually we want to post remotely via rpost on your home site */
 	// When that works remove this next bit:
 
-	if(! local_channel())
+	if(! local_user())
 		killme();
 
 	xchan_query($r);
@@ -58,7 +58,7 @@ function share_init(&$a) {
 		$o.= "[/share]";
 	}
 
-	if(local_channel()) {
+	if(local_user()) {
 		echo $o;
 		killme();
 	}

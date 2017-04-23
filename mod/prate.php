@@ -4,7 +4,7 @@ function prate_init(&$a) {
 	if($_SERVER['REQUEST_METHOD'] === 'post')
 		return;
 
-	if(! local_channel())
+	if(! local_user())
 		return;
 
 	$channel = $a->get_channel();
@@ -24,7 +24,7 @@ function prate_init(&$a) {
 
 function prate_post(&$a) {
 
-	if(! local_channel())
+	if(! local_user())
 		return;
 
 	$channel = $a->get_channel();

@@ -10,13 +10,13 @@ function events_post(&$a) {
 
 	logger('post: ' . print_r($_REQUEST,true));
 
-	if(! local_channel())
+	if(! local_user())
 		return;
 
 	if(($_FILES) && array_key_exists('userfile',$_FILES) && intval($_FILES['userfile']['size'])) {
 		$src = $_FILES['userfile']['tmp_name'];
 		if($src) {
-			$result = parse_ical_file($src,local_channel());
+			$result = parse_ical_file($src,local_user());
 			if($result)
 				info( t('Calendar entries imported.') . EOL);
 			else
@@ -31,7 +31,7 @@ function events_post(&$a) {
 	$event_hash = ((x($_POST,'event_hash')) ? $_POST['event_hash'] : '');
 
 	$xchan = ((x($_POST,'xchan')) ? dbesc($_POST['xchan']) : '');
-	$uid      = local_channel();
+	$uid      = local_user();
 
 	$start_text = escape_tags($_REQUEST['start_text']);
 	$finish_text = escape_tags($_REQUEST['finish_text']);
@@ -92,8 +92,8 @@ function events_post(&$a) {
 	$type     = 'event';
 
 	require_once('include/text.php');
-	linkify_tags($a, $desc, local_channel());
-	linkify_tags($a, $location, local_channel());
+	linkify_tags($a, $desc, local_user());
+	linkify_tags($a, $location, local_user());
 
 	$action = ($event_hash == '') ? 'new' : "event/" . $event_hash;
 	$onerror_url = $a->get_baseurl() . "/events/" . $action . "?summary=$summary&description=$desc&location=$location&start=$start_text&finish=$finish_text&adjust=$adjust&nofinish=$nofinish";
@@ -122,7 +122,7 @@ function events_post(&$a) {
 	if($event_id) {
 		$x = q("select * from event where id = %d and uid = %d limit 1",
 			intval($event_id),
-			intval(local_channel())
+			intval(local_user())
 		);
 		if(! $x) {
 			notice( t('Event not found.') . EOL);
@@ -193,7 +193,7 @@ function events_post(&$a) {
 	$datarray['type'] = $type;
 	$datarray['adjust'] = $adjust;
 	$datarray['nofinish'] = $nofinish;
-	$datarray['uid'] = local_channel();
+	$datarray['uid'] = local_user();
 	$datarray['account'] = get_account_id();
 	$datarray['event_xchan'] = $channel['channel_hash'];
 	$datarray['allow_cid'] = $str_contact_allow;
@@ -245,7 +245,7 @@ function events_post(&$a) {
 
 function events_content(&$a) {
 
-	if(! local_channel()) {
+	if(! local_user()) {
 		notice( t('Permission denied.') . EOL);
 		return;
 	}
@@ -255,21 +255,21 @@ function events_content(&$a) {
 	if((argc() > 2) && (argv(1) === 'ignore') && intval(argv(2))) {
 		$r = q("update event set ignore = 1 where id = %d and uid = %d",
 			intval(argv(2)),
-			intval(local_channel())
+			intval(local_user())
 		);
 	}
 
 	if((argc() > 2) && (argv(1) === 'unignore') && intval(argv(2))) {
 		$r = q("update event set ignore = 0 where id = %d and uid = %d",
 			intval(argv(2)),
-			intval(local_channel())
+			intval(local_user())
 		);
 	}
 
 
 	$plaintext = true;
 
-//	if(feature_enabled(local_channel(),'richtext'))
+//	if(feature_enabled(local_user(),'richtext'))
 //		$plaintext = false;
 
 
@@ -319,7 +319,7 @@ function events_content(&$a) {
 	}
 
 	if($mode === 'add') {
-		event_addtocal($item_id,local_channel());
+		event_addtocal($item_id,local_user());
 		killme();
 	}
 
@@ -380,7 +380,7 @@ function events_content(&$a) {
 		if (x($_GET,'id')){
 		  	$r = q("SELECT event.*, item.plink, item.item_flags, item.author_xchan, item.owner_xchan
                                 from event left join item on resource_id = event_hash where resource_type = 'event' and event.uid = %d and event.id = %d limit 1",
-				intval(local_channel()),
+				intval(local_user()),
 				intval($_GET['id'])
 			);
 		} else {
@@ -395,7 +395,7 @@ function events_content(&$a) {
 				where resource_type = 'event' and event.uid = %d $ignored
 				AND (( `adjust` = 0 AND ( `finish` >= '%s' or nofinish = 1 ) AND `start` <= '%s' ) 
 				OR  (  `adjust` = 1 AND ( `finish` >= '%s' or nofinish = 1 ) AND `start` <= '%s' )) ",
-				intval(local_channel()),
+				intval(local_user()),
 				dbesc($start),
 				dbesc($finish),
 				dbesc($adjust_start),
@@ -520,7 +520,7 @@ function events_content(&$a) {
 	if($mode === 'drop' && $event_id) {
 		$r = q("SELECT * FROM `event` WHERE event_hash = '%s' AND `uid` = %d LIMIT 1",
 			dbesc($event_id),
-			intval(local_channel())
+			intval(local_user())
 		);
 
 		$sync_event = $r[0];
@@ -528,12 +528,12 @@ function events_content(&$a) {
 		if($r) {
 			$r = q("delete from event where event_hash = '%s' and uid = %d limit 1",
 				dbesc($event_id),
-				intval(local_channel())
+				intval(local_user())
 			);
 			if($r) {
 				$r = q("update item set resource_type = '', resource_id = '' where resource_type = 'event' and resource_id = '%s' and uid = %d",
 					dbesc($event_id),
-					intval(local_channel())
+					intval(local_user())
 				);
 				$sync_event['event_deleted'] = 1;
 				build_sync_packet(0,array('event' => array($sync_event)));
@@ -550,7 +550,7 @@ function events_content(&$a) {
 	if($mode === 'edit' && $event_id) {
 		$r = q("SELECT * FROM `event` WHERE event_hash = '%s' AND `uid` = %d LIMIT 1",
 			dbesc($event_id),
-			intval(local_channel())
+			intval(local_user())
 		);
 		if(count($r))
 			$orig_event = $r[0];
@@ -623,14 +623,14 @@ function events_content(&$a) {
 		if(! $f)
 			$f = 'ymd';
 
-		$catsenabled = feature_enabled(local_channel(),'categories');
+		$catsenabled = feature_enabled(local_user(),'categories');
 
 		$category = '';
 
 		if($catsenabled && x($orig_event)){
 			$itm = q("select * from item where resource_type = 'event' and resource_id = '%s' and uid = %d limit 1",
 				dbesc($orig_event['event_hash']),
-				intval(local_channel())
+				intval(local_user())
 			);
 			$itm = fetch_post_tags($itm);
 			if($itm) {

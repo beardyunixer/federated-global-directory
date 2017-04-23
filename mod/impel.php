@@ -8,7 +8,7 @@ function impel_init(&$a) {
 
 	$ret = array('success' => false);
 
-	if(! local_channel())
+	if(! local_user())
 		json_return_and_die($ret);
 
 	logger('impel: ' . print_r($_REQUEST,true), LOGGER_DATA);
@@ -60,7 +60,7 @@ function impel_init(&$a) {
 
 	if($is_menu) {
 		$m = array();
-		$m['menu_channel_id'] = local_channel();
+		$m['menu_channel_id'] = local_user();
 		$m['menu_name'] = $j['pagetitle'];
 		$m['menu_desc'] = $j['desc'];
 		if($j['created'])
@@ -96,13 +96,13 @@ function impel_init(&$a) {
 						if(in_array('chatroom',$it['flags']))
 							$mitem['mitem_flags'] |= MENU_ITEM_CHATROOM;
 					}
-					menu_add_item($menu_id,local_channel(),$mitem);
+					menu_add_item($menu_id,local_user(),$mitem);
 				}
 				if($j['edited']) {
 					$x = q("update menu set menu_edited = '%s' where menu_id = %d and menu_channel_id = %d",
 						dbesc(datetime_convert('UTC','UTC',$j['edited'])),
 						intval($menu_id),
-						intval(local_channel())
+						intval(local_user())
 					);
 				}
 			}	
@@ -111,7 +111,7 @@ function impel_init(&$a) {
 		$x = $ret;
 	}
 	else {
-		$arr['uid'] = local_channel();
+		$arr['uid'] = local_user();
 		$arr['aid'] = $channel['channel_account_id'];
 		$arr['title'] = $j['title'];
 		$arr['body'] = $j['body'];
@@ -142,7 +142,7 @@ function impel_init(&$a) {
 
 		if($arr['mimetype'] === 'application/x-php') {
 			$z = q("select account_id, account_roles, channel_pageflags from account left join channel on channel_account_id = account_id where channel_id = %d limit 1",
-				intval(local_channel())
+				intval(local_user())
 			);
 
 			if($z && (($z[0]['account_roles'] & ACCOUNT_ROLE_ALLOWCODE) || ($z[0]['channel_pageflags'] & PAGE_ALLOWCODE))) {
@@ -155,11 +155,11 @@ function impel_init(&$a) {
 		$z = q("select * from item_id where sid = '%s' and service = '%s' and uid = %d limit 1",
 			dbesc($pagetitle),
 			dbesc($namespace),
-			intval(local_channel())
+			intval(local_user())
 		);
 		$i = q("select id, edited, item_restrict from item where mid = '%s' and uid = %d limit 1",
 			dbesc($arr['mid']),
-			intval(local_channel())
+			intval(local_user())
 		);
 
 		if($z && $i) {
@@ -174,7 +174,7 @@ function impel_init(&$a) {
 				// was partially deleted already, finish it off
 				q("delete from item where mid = '%s' and uid = %d",
 					dbesc($arr['mid']),
-					intval(local_channel())
+					intval(local_user())
 				);
 			}
 			$x = item_store($arr,$execflag);

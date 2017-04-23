@@ -43,9 +43,9 @@ function ping_init(&$a) {
 
 	$vnotify = false;
 
-	if(local_channel())  {
-		$vnotify = get_pconfig(local_channel(),'system','vnotify');
-		$evdays = intval(get_pconfig(local_channel(),'system','evdays'));
+	if(local_user())  {
+		$vnotify = get_pconfig(local_user(),'system','vnotify');
+		$evdays = intval(get_pconfig(local_user(),'system','evdays'));
 		$ob_hash = get_observer_hash();
 	}
 
@@ -64,7 +64,7 @@ function ping_init(&$a) {
 	 * of the now current channel. 
 	 */
 
-	$result['invalid'] = ((intval($_GET['uid'])) && (intval($_GET['uid']) != local_channel()) ? 1 : 0);
+	$result['invalid'] = ((intval($_GET['uid'])) && (intval($_GET['uid']) != local_user()) ? 1 : 0);
 
 	/**
 	 * Send all system messages (alerts) to the browser.
@@ -133,7 +133,7 @@ function ping_init(&$a) {
 		db_utcnow(), db_quoteinterval('3 MINUTE')
 	); 
 
-	if((! local_channel()) || ($result['invalid'])) {
+	if((! local_user()) || ($result['invalid'])) {
 		echo json_encode($result);
 		killme();
 	}
@@ -148,36 +148,36 @@ function ping_init(&$a) {
 	 */
 
 	// mark all items read
-	if(x($_REQUEST, 'markRead') && local_channel()) {
+	if(x($_REQUEST, 'markRead') && local_user()) {
 		switch($_REQUEST['markRead']) {
 			case 'network':
 				$r = q("update item set item_unseen = 0 where item_unseen = 1 and uid = %d", 
-					intval(local_channel())
+					intval(local_user())
 				);
 				break;
 			case 'home':
 				$r = q("update item set item_unseen = 0 where item_unseen = 1 and (item_flags & %d) > 0  and uid = %d", 
 					intval(ITEM_WALL),
-					intval(local_channel())
+					intval(local_user())
 				);
 				break;
 			case 'messages':
 				$r = q("update mail set mail_flags = ( mail_flags | %d ) where channel_id = %d and not (mail_flags & %d) > 0",
 					intval(MAIL_SEEN),
-					intval(local_channel()),
+					intval(local_user()),
 					intval(MAIL_SEEN)
 				);
 				break;
 			case 'all_events':
 				$r = q("update event set `ignore` = 1 where `ignore` = 0 and uid = %d AND start < '%s' AND start > '%s' ",
-					intval(local_channel()),
+					intval(local_user()),
 					dbesc(datetime_convert('UTC', date_default_timezone_get(), 'now + ' . intval($evdays) . ' days')),
 					dbesc(datetime_convert('UTC', date_default_timezone_get(), 'now - 1 days'))
 				);
 				break;
 			case 'notify':
 				$r = q("update notify set seen = 1 where uid = %d",
-					intval(local_channel())
+					intval(local_user())
 				);
 				break;
 			default:
@@ -185,10 +185,10 @@ function ping_init(&$a) {
 		}
 	}
 
-	if(x($_REQUEST, 'markItemRead') && local_channel()) {
+	if(x($_REQUEST, 'markItemRead') && local_user()) {
 		$r = q("update item set item_unseen = 0 where parent = %d and uid = %d", 
 			intval($_REQUEST['markItemRead']),
-			intval(local_channel())
+			intval(local_user())
 		);
 	}
 
@@ -201,22 +201,22 @@ function ping_init(&$a) {
 
 	if(argc() > 1 && argv(1) === 'notify') {
 		$t = q("select count(*) as total from notify where uid = %d and seen = 0",
-			intval(local_channel())
+			intval(local_user())
 		);
 		if($t && intval($t[0]['total']) > 49) {
 			$z = q("select * from notify where uid = %d
 				and seen = 0 order by date desc limit 50",
-				intval(local_channel())
+				intval(local_user())
 			);
 		}
 		else {
 			$z1 = q("select * from notify where uid = %d
 				and seen = 0 order by date desc limit 50",
-				intval(local_channel())
+				intval(local_user())
 			);
 			$z2 = q("select * from notify where uid = %d
 				and seen = 1 order by date desc limit %d",
-				intval(local_channel()),
+				intval(local_user()),
 				intval(50 - intval($t[0]['total']))
 			);
 			$z = array_merge($z1,$z2);
@@ -245,7 +245,7 @@ function ping_init(&$a) {
 		$t = q("select mail.*, xchan.* from mail left join xchan on xchan_hash = from_xchan 
 			where channel_id = %d and not ( mail_flags & %d ) > 0 and not (mail_flags & %d ) > 0 
 			and from_xchan != '%s' order by created desc limit 50",
-			intval(local_channel()),
+			intval(local_user()),
 			intval(MAIL_SEEN),
 			intval(MAIL_DELETED),
 			dbesc($channel['channel_hash'])
@@ -275,7 +275,7 @@ function ping_init(&$a) {
 		$r = q("SELECT * FROM item
 			WHERE item_restrict = 0 and item_unseen = 1 and uid = %d
 			and author_xchan != '%s' ORDER BY created DESC limit 300",
-			intval(local_channel()),
+			intval(local_user()),
 			dbesc($ob_hash)
 		);
 
@@ -296,7 +296,7 @@ function ping_init(&$a) {
 		$result = array();
 
 		$r = q("SELECT * FROM abook left join xchan on abook.abook_xchan = xchan.xchan_hash where abook_channel = %d and (abook_flags & %d) > 0 and not ((abook_flags & %d) > 0 or (xchan_flags & %d) > 0) ORDER BY abook_created DESC LIMIT 50",
-			intval(local_channel()),
+			intval(local_user()),
 			intval(ABOOK_FLAG_PENDING),
 			intval(ABOOK_FLAG_SELF|ABOOK_FLAG_IGNORED),
 			intval(XCHAN_FLAGS_DELETED|XCHAN_FLAGS_ORPHAN)
@@ -328,7 +328,7 @@ function ping_init(&$a) {
 		$r = q("SELECT * FROM event left join xchan on event_xchan = xchan_hash
 			WHERE `event`.`uid` = %d AND start < '%s' AND start > '%s' and `ignore` = 0
 			ORDER BY `start` DESC LIMIT 1000",
-			intval(local_channel()),
+			intval(local_user()),
 			dbesc(datetime_convert('UTC', date_default_timezone_get(), 'now + ' . intval($evdays) . ' days')),
 			dbesc(datetime_convert('UTC', date_default_timezone_get(), 'now - 1 days'))
 		);
@@ -369,7 +369,7 @@ function ping_init(&$a) {
 
 	if($vnotify & VNOTIFY_SYSTEM) {
 		$t = q("select count(*) as total from notify where uid = %d and seen = 0",
-			intval(local_channel())
+			intval(local_user())
 		);
 		if($t)
 			$result['notify'] = intval($t[0]['total']);
@@ -381,7 +381,7 @@ function ping_init(&$a) {
 		$r = q("SELECT id, item_restrict, item_flags FROM item
 			WHERE item_restrict = 0 and item_unseen = 1 and uid = %d
 			and author_xchan != '%s'",
-			intval(local_channel()),
+			intval(local_user()),
 			dbesc($ob_hash)
 		);
 
@@ -407,7 +407,7 @@ function ping_init(&$a) {
 
 	if($vnotify & VNOTIFY_INTRO) {
 		$intr = q("SELECT COUNT(abook.abook_id) AS total FROM abook left join xchan on abook.abook_xchan = xchan.xchan_hash where abook_channel = %d and (abook_flags & %d) > 0 and not ((abook_flags & %d) > 0 or (xchan_flags & %d) > 0)",
-			intval(local_channel()),
+			intval(local_user()),
 			intval(ABOOK_FLAG_PENDING),
 			intval(ABOOK_FLAG_SELF|ABOOK_FLAG_IGNORED),
 			intval(XCHAN_FLAGS_DELETED|XCHAN_FLAGS_ORPHAN)
@@ -425,7 +425,7 @@ function ping_init(&$a) {
 	if($vnotify & VNOTIFY_MAIL) {
 		$mails = q("SELECT count(id) as total from mail
 			WHERE channel_id = %d AND not (mail_flags & %d) > 0 and from_xchan != '%s' ",
-			intval(local_channel()),
+			intval(local_user()),
 			intval(MAIL_SEEN),		
 			dbesc($channel['channel_hash'])
 		);
@@ -449,7 +449,7 @@ function ping_init(&$a) {
 		$events = q("SELECT type, start, adjust FROM `event`
 			WHERE `event`.`uid` = %d AND start < '%s' AND start > '%s' and `ignore` = 0
 			ORDER BY `start` ASC ",
-				intval(local_channel()),
+				intval(local_user()),
 				dbesc(datetime_convert('UTC', date_default_timezone_get(), 'now + ' . intval($evdays) . ' days')),
 				dbesc(datetime_convert('UTC', date_default_timezone_get(), 'now - 1 days'))
 		);

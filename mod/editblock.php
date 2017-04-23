@@ -33,7 +33,7 @@ function editblock_content(&$a) {
 
 	$which = argv(1);
 
-	$uid = local_channel();
+	$uid = local_user();
 	$owner = 0;
 	$channel = null;
 	$observer = $a->get_observer();

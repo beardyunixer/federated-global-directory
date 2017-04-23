@@ -5,11 +5,11 @@ require_once('include/follow.php');
 
 function follow_init(&$a) {
 
-	if(! local_channel()) {
+	if(! local_user()) {
 		return;
 	}
 
-	$uid = local_channel();
+	$uid = local_user();
 	$url = notags(trim($_REQUEST['url']));
 	$return_url = $_SESSION['return_url'];
 	$confirm = intval($_REQUEST['confirm']);
@@ -34,7 +34,7 @@ function follow_init(&$a) {
 	unset($clone['abook_account']);
 	unset($clone['abook_channel']);
 
-	build_sync_packet(0 /* use the current local_channel */, array('abook' => array($clone)));
+	build_sync_packet(0 /* use the current local_user */, array('abook' => array($clone)));
 
 
 	// If we can view their stream, pull in some posts
@@ -48,7 +48,7 @@ function follow_init(&$a) {
 
 function follow_content(&$a) {
 
-	if(! local_channel()) {
+	if(! local_user()) {
 		return login();
 	}
 }

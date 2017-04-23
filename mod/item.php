@@ -25,12 +25,12 @@ function item_post(&$a) {
 	// This will change. Figure out who the observer is and whether or not
 	// they have permission to post here. Else ignore the post.
 
-	if((! local_channel()) && (! remote_channel()) && (! x($_REQUEST,'commenter')))
+	if((! local_user()) && (! remote_channel()) && (! x($_REQUEST,'commenter')))
 		return;
 
 	require_once('include/security.php');
 
-	$uid = local_channel();
+	$uid = local_user();
 	$channel = null;
 	$observer = null;
 
@@ -975,7 +975,7 @@ function item_post(&$a) {
 
 function item_content(&$a) {
 
-	if((! local_channel()) && (! remote_channel()))
+	if((! local_user()) && (! remote_channel()))
 		return;
 
 	require_once('include/security.php');
@@ -990,7 +990,7 @@ function item_content(&$a) {
 		if($i) {
 			$can_delete = false;
 			$local_delete = false;
-			if(local_channel() && local_channel() == $i[0]['uid'])
+			if(local_user() && local_user() == $i[0]['uid'])
 				$local_delete = true;
 
 			$sys = get_sys_channel();

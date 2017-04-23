@@ -40,7 +40,7 @@ function manage_content(&$a) {
 
 	$channels = null;
 
-	if(local_channel()) {
+	if(local_user()) {
 		$r = q("select channel.*, xchan.* from channel left join xchan on channel.channel_hash = xchan.xchan_hash where channel.channel_account_id = %d and not ( channel_pageflags & %d )>0 order by channel_name ",
 			intval(get_account_id()),
 			intval(PAGE_REMOVED)
@@ -146,7 +146,7 @@ function manage_content(&$a) {
 
 	$delegates = q("select * from abook left join xchan on abook_xchan = xchan_hash where 
 		abook_channel = %d and (abook_their_perms & %d) > 0",
-		intval(local_channel()),
+		intval(local_user()),
 		intval(PERMS_A_DELEGATE)
 	);
 
@@ -165,7 +165,7 @@ function manage_content(&$a) {
 	$o = replace_macros(get_markup_template('channels.tpl'), array(
 		'$header'           => t('Channel Manager'),
 		'$msg_selected'     => t('Current Channel'),
-		'$selected'         => local_channel(),
+		'$selected'         => local_user(),
 		'$desc'             => t('Switch to one of your channels by selecting it.'),
 		'$msg_default'      => t('Default Channel'),
 		'$msg_make_default' => t('Make Default'),

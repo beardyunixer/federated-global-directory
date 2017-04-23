@@ -33,7 +33,7 @@ function lockview_content(&$a) {
 	//we have different naming in in menu_item table
 	$uid = (($type == 'menu_item') ? $item['mitem_channel_id'] : $item['uid']);
 
-	if($uid != local_channel()) {
+	if($uid != local_user()) {
 		echo '<li>' . t('Remote privacy information not available.') . '</li>';
 		killme();
 	}

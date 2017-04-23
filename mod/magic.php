@@ -75,7 +75,7 @@ function magic_init(&$a) {
 	// By default, we'll proceed without asking.
 
 	$arr = array(
-		'channel_id' => local_channel(),
+		'channel_id' => local_user(),
 		'xchan' => $x[0],
 		'destination' => $dest, 
 		'proceed' => true
@@ -125,7 +125,7 @@ function magic_init(&$a) {
 		goaway($dest);
 	}
 
-	if(local_channel()) {
+	if(local_user()) {
 		$channel = $a->get_channel();
 
 		$token = random_string();

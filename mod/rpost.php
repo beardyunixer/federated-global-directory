@@ -30,7 +30,7 @@ function rpost_content(&$a) {
 
 	$o = '';
 
-	if(! local_channel()) {
+	if(! local_user()) {
 		if(remote_channel()) {
 			// redirect to your own site.
 			// We can only do this with a GET request so you'll need to keep the text short or risk getting truncated
@@ -84,7 +84,7 @@ function rpost_content(&$a) {
 	}
 
 	$plaintext = true;
-//	if(feature_enabled(local_channel(),'richtext'))
+//	if(feature_enabled(local_user(),'richtext'))
 //		$plaintext = false;
 
 	if(array_key_exists('type', $_REQUEST) && $_REQUEST['type'] === 'html') {
@@ -117,7 +117,7 @@ function rpost_content(&$a) {
 		'acl' => populate_acl($channel_acl),
 		'bang' => '',
 		'visitor' => true,
-		'profile_uid' => local_channel(),
+		'profile_uid' => local_user(),
 		'title' => $_REQUEST['title'],
 		'body' => $_REQUEST['body'],
 		'attachment' => $_REQUEST['attachment'],

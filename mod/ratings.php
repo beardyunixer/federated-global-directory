@@ -4,12 +4,12 @@ require_once('include/dir_fns.php');
 
 function ratings_init(&$a) {
 
-	if((get_config('system','block_public')) && (! local_channel()) && (! remote_channel())) {
+	if((get_config('system','block_public')) && (! local_user()) && (! remote_channel())) {
 		return;
 	}
 
-	if(local_channel())
-		load_contact_links(local_channel());
+	if(local_user())
+		load_contact_links(local_user());
 
 	$dirmode = intval(get_config('system','directory_mode'));
 
@@ -78,7 +78,7 @@ function ratings_init(&$a) {
 
 function ratings_content(&$a) {
 
-	if((get_config('system','block_public')) && (! local_channel()) && (! remote_channel())) {
+	if((get_config('system','block_public')) && (! local_user()) && (! remote_channel())) {
 		notice( t('Public access denied.') . EOL);
 		return;
 	}

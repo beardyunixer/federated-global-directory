@@ -3,14 +3,14 @@ require_once('include/conversation.php');
 require_once('include/text.php');
 
 function sharedwithme_content(&$a) {
-	if(! local_channel()) {
+	if(! local_user()) {
 		notice( t('Permission denied.') . EOL);
 		return;
 	}
 	
 	$channel = $a->get_channel();
 
-	$is_owner = (local_channel() && (local_channel() == $channel['channel_id']));
+	$is_owner = (local_user() && (local_user() == $channel['channel_id']));
 
 	//check for updated items and remove them
 	require_once('include/sharedwithme.php');
@@ -23,7 +23,7 @@ function sharedwithme_content(&$a) {
 
 		q("DELETE FROM item WHERE id = %d AND uid = %d",
 			intval($id),
-			intval(local_channel())
+			intval(local_user())
 		);
 
 		goaway(z_root() . '/sharedwithme');
@@ -35,7 +35,7 @@ function sharedwithme_content(&$a) {
 		q("DELETE FROM item WHERE verb = '%s' AND obj_type = '%s' AND uid = %d",
 			dbesc(ACTIVITY_POST),
 			dbesc(ACTIVITY_OBJ_FILE),
-			intval(local_channel())
+			intval(local_user())
 		);
 
 		goaway(z_root() . '/sharedwithme');
@@ -45,7 +45,7 @@ function sharedwithme_content(&$a) {
 	$r = q("SELECT id, uid, object, item_unseen FROM item WHERE verb = '%s' AND obj_type = '%s' AND uid = %d AND owner_xchan != '%s'",
 		dbesc(ACTIVITY_POST),
 		dbesc(ACTIVITY_OBJ_FILE),
-		intval(local_channel()),
+		intval(local_user()),
 		dbesc($channel['channel_hash'])
 	);
 
@@ -83,7 +83,7 @@ function sharedwithme_content(&$a) {
 		$ids = rtrim($ids, ",");
 
 		q("UPDATE item SET item_unseen = 0 WHERE id IN ( $ids ) AND uid = %d",
-			intval(local_channel())
+			intval(local_user())
 		);
 
 	}

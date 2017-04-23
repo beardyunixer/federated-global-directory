@@ -61,13 +61,13 @@ function id_init(&$a) {
 /**
  * @brief Returns user data needed for OpenID.
  *
- * If no $handle is provided we will use local_channel() by default.
+ * If no $handle is provided we will use local_user() by default.
  *
  * @param string $handle (default null)
  * @return boolean|array
  */
 function getUserData($handle = null) {
-	if (! local_channel()) {
+	if (! local_user()) {
 		notice( t('Permission denied.') . EOL);
 		get_app()->page['content'] =  login();
 
@@ -82,7 +82,7 @@ function getUserData($handle = null) {
 		);
 	} else {
 		$r = q("select * from channel left join xchan on channel_hash = xchan_hash where channel_id = %d",
-			intval(local_channel())
+			intval(local_user())
 		);
 	}
 
@@ -252,7 +252,7 @@ class MysqlProvider extends LightOpenIDProvider {
 			return false;
 		}
 
-		$q = get_pconfig(local_channel(), 'openid', $realm);
+		$q = get_pconfig(local_user(), 'openid', $realm);
 
 		$attrs = array();
 		if($q) {
@@ -271,7 +271,7 @@ class MysqlProvider extends LightOpenIDProvider {
         }
 
 		if(isset($_POST['always'])) {
-			set_pconfig(local_channel(),'openid',$realm,array_keys($attributes));
+			set_pconfig(local_user(),'openid',$realm,array_keys($attributes));
 		}
 
 		return z_root() . '/id/' . $data['channel_address'];

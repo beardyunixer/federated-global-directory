@@ -12,7 +12,7 @@ function zping_content(&$a) {
 
 	// Remember to add '/post' to the url
 
-	if(! local_channel())
+	if(! local_user())
 		return;
 
 	$url = $_REQUEST['url'];

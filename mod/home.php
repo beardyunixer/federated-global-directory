@@ -13,10 +13,10 @@ function home_init(&$a) {
 	$splash = ((argc() > 1 && argv(1) === 'splash') ? true : false);
 
 	$channel = $a->get_channel();
-	if(local_channel() && $channel && $channel['xchan_url'] && ! $splash) {
+	if(local_user() && $channel && $channel['xchan_url'] && ! $splash) {
 		$dest = $channel['channel_startpage'];
 		if(! $dest)
-			$dest = get_pconfig(local_channel(),'system','startpage');
+			$dest = get_pconfig(local_user(),'system','startpage');
 		if(! $dest)
 			$dest = get_config('system','startpage');
 		if(! $dest)

@@ -18,10 +18,10 @@ require_once('include/items.php');
 
 function poke_init(&$a) {
 
-	if(! local_channel())
+	if(! local_user())
 		return;
 
-	$uid = local_channel();
+	$uid = local_user();
 	$channel = $a->get_channel();
 
 	$verb = notags(trim($_REQUEST['verb']));
@@ -124,7 +124,7 @@ function poke_init(&$a) {
 
 function poke_content(&$a) {
 
-	if(! local_channel()) {
+	if(! local_user()) {
 		notice( t('Permission denied.') . EOL);
 		return;
 	}
@@ -136,7 +136,7 @@ function poke_content(&$a) {
 		$r = q("select abook_id, xchan_name from abook left join xchan on abook_xchan = xchan_hash 
 			where abook_id = %d and abook_channel = %d limit 1",
 			intval($_REQUEST['c']),
-			intval(local_channel())
+			intval(local_user())
 		);
 		if($r) {
 			$name = $r[0]['xchan_name'];

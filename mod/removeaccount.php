@@ -2,7 +2,7 @@
 
 function removeaccount_post(&$a) {
 
-	if(! local_channel())
+	if(! local_user())
 		return;
 
 	if($_SESSION['delegate'])
@@ -44,7 +44,7 @@ function removeaccount_post(&$a) {
 
 function removeaccount_content(&$a) {
 
-	if(! local_channel())
+	if(! local_user())
 		goaway(z_root());
 
 	$hash = random_string();

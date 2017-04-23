@@ -22,12 +22,12 @@ function oauth_get_client($request){
 
 function api_post(&$a) {
 
-	if(! local_channel()) {
+	if(! local_user()) {
 		notice( t('Permission denied.') . EOL);
 		return;
 	}
 
-	if(count($a->user) && x($a->user,'uid') && $a->user['uid'] != local_channel()) {
+	if(count($a->user) && x($a->user,'uid') && $a->user['uid'] != local_user()) {
 		notice( t('Permission denied.') . EOL);
 		return;
 	}
@@ -57,8 +57,8 @@ function api_content(&$a) {
 			if (is_null($app)) return "Invalid request. Unknown token.";
 			$consumer = new OAuthConsumer($app['client_id'], $app['pw'], $app['redirect_uri']);
 
-			$verifier = md5($app['secret'].local_channel());
-			set_config("oauth", $verifier, local_channel());
+			$verifier = md5($app['secret'].local_user());
+			set_config("oauth", $verifier, local_user());
 			
 			
 			if ($consumer->callback_url!=null) {
@@ -84,7 +84,7 @@ function api_content(&$a) {
 		}
 		
 		
-		if(! local_channel()) {
+		if(! local_user()) {
 			//TODO: we need login form to redirect to this page
 			notice( t('Please login to continue.') . EOL );
 			return login(false,'api-login',$request->get_parameters());

@@ -10,7 +10,7 @@ function disallowed_pconfig() {
 
 function pconfig_post(&$a) {
 
-	if(! local_channel())
+	if(! local_user())
 		return;
 
 
@@ -32,7 +32,7 @@ function pconfig_post(&$a) {
 		$v = z_obscure($v);
 	}
 
-	set_pconfig(local_channel(),$cat,$k,$v);
+	set_pconfig(local_user(),$cat,$k,$v);
 	build_sync_packet();
 
 	goaway(z_root() . '/pconfig/' . $cat . '/' .  $k);
@@ -42,7 +42,7 @@ function pconfig_post(&$a) {
 
 function pconfig_content(&$a) {
 
-	if(! local_channel()) {
+	if(! local_user()) {
 		return login();
 	}
 
@@ -52,9 +52,9 @@ function pconfig_content(&$a) {
 
 
 	if(argc() == 3) {
-		$content .= '<a href="pconfig">pconfig[' . local_channel() . ']</a>' . EOL;
-		$content .= '<a href="pconfig/' . escape_tags(argv(1)) . '">pconfig[' . local_channel() . '][' . escape_tags(argv(1)) . ']</a>' . EOL . EOL;
-		$content .= '<a href="pconfig/' . escape_tags(argv(1)) . '/' . escape_tags(argv(2)) . '" >pconfig[' . local_channel() . '][' . escape_tags(argv(1)) . '][' . escape_tags(argv(2)) . ']</a> = ' . get_pconfig(local_channel(),escape_tags(argv(1)),escape_tags(argv(2))) . EOL;
+		$content .= '<a href="pconfig">pconfig[' . local_user() . ']</a>' . EOL;
+		$content .= '<a href="pconfig/' . escape_tags(argv(1)) . '">pconfig[' . local_user() . '][' . escape_tags(argv(1)) . ']</a>' . EOL . EOL;
+		$content .= '<a href="pconfig/' . escape_tags(argv(1)) . '/' . escape_tags(argv(2)) . '" >pconfig[' . local_user() . '][' . escape_tags(argv(1)) . '][' . escape_tags(argv(2)) . ']</a> = ' . get_pconfig(local_user(),escape_tags(argv(1)),escape_tags(argv(2))) . EOL;
 
 		if(in_array(argv(2),disallowed_pconfig())) {
 			notice( t('This setting requires special processing and editing has been blocked.') . EOL);
@@ -66,19 +66,19 @@ function pconfig_content(&$a) {
 
 
 	if(argc() == 2) {
-		$content .= '<a href="pconfig">pconfig[' . local_channel() . ']</a>' . EOL;
-		load_pconfig(local_channel(),escape_tags(argv(1)));
-		foreach($a->config[local_channel()][escape_tags(argv(1))] as $k => $x) {
-			$content .= '<a href="pconfig/' . escape_tags(argv(1)) . '/' . $k . '" >pconfig[' . local_channel() . '][' . escape_tags(argv(1)) . '][' . $k . ']</a> = ' . escape_tags($x) . EOL;
+		$content .= '<a href="pconfig">pconfig[' . local_user() . ']</a>' . EOL;
+		load_pconfig(local_user(),escape_tags(argv(1)));
+		foreach($a->config[local_user()][escape_tags(argv(1))] as $k => $x) {
+			$content .= '<a href="pconfig/' . escape_tags(argv(1)) . '/' . $k . '" >pconfig[' . local_user() . '][' . escape_tags(argv(1)) . '][' . $k . ']</a> = ' . escape_tags($x) . EOL;
 		}
 	}
 
 	if(argc() == 1) {
 
-		$r = q("select * from pconfig where uid = " . local_channel());
+		$r = q("select * from pconfig where uid = " . local_user());
 		if($r) {
 			foreach($r as $rr) {
-				$content .= '<a href="' . 'pconfig/' . escape_tags($rr['cat']) . '/' . escape_tags($rr['k']) . '" >pconfig[' . local_channel() . '][' . escape_tags($rr['cat']) . '][' . escape_tags($rr['k']) . ']</a> = ' . escape_tags($rr['v']) . EOL;
+				$content .= '<a href="' . 'pconfig/' . escape_tags($rr['cat']) . '/' . escape_tags($rr['k']) . '" >pconfig[' . local_user() . '][' . escape_tags($rr['cat']) . '][' . escape_tags($rr['k']) . ']</a> = ' . escape_tags($rr['v']) . EOL;
 			}
 		}
 	}
@@ -92,7 +92,7 @@ function pconfig_form($cat,$k) {
 	$o = '<form action="pconfig" method="post" >';
 	$o .= '<input type="hidden" name="form_security_token" value="' . get_form_security_token('pconfig') . '" />';
 
-	$v = get_pconfig(local_channel(),$cat,$k);
+	$v = get_pconfig(local_user(),$cat,$k);
 	if(strpos($k,'password') !== false) 
 		$v = z_unobscure($v);
 

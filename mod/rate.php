@@ -3,7 +3,7 @@
 
 function rate_init(&$a) {
 
-	if(! local_channel())
+	if(! local_user())
 		return;
 
 	$channel = $a->get_channel();
@@ -40,7 +40,7 @@ function rate_init(&$a) {
 
 function rate_post(&$a) {
 
-	if(! local_channel())
+	if(! local_user())
 		return;
 
 	if(! $a->data['target'])
@@ -106,7 +106,7 @@ function rate_post(&$a) {
 
 function rate_content(&$a) {
 
-	if(! local_channel()) {
+	if(! local_user()) {
 		notice( t('Permission denied.') . EOL);
 		return;
 	}

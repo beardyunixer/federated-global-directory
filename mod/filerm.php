@@ -2,7 +2,7 @@
 
 function filerm_content(&$a) {
 
-	if(! local_channel()) {
+	if(! local_user()) {
 		killme();
 	}
 
@@ -19,7 +19,7 @@ function filerm_content(&$a) {
 
 	if($item_id && strlen($term)) {
 		$r = q("delete from term where uid = %d and type = %d and oid = %d and term = '%s'",
-			intval(local_channel()),
+			intval(local_user()),
 			intval(($category) ? TERM_CATEGORY : TERM_FILE),
 			intval($item_id),
 			dbesc($term)

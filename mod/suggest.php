@@ -6,12 +6,12 @@ require_once('include/widgets.php');
 
 
 function suggest_init(&$a) {
-	if(! local_channel())
+	if(! local_user())
 		return;
 
 	if(x($_GET,'ignore')) {
 		q("insert into xign ( uid, xchan ) values ( %d, '%s' ) ",
-			intval(local_channel()),
+			intval(local_user()),
 			dbesc($_GET['ignore'])
 		);
 	}
@@ -22,14 +22,14 @@ function suggest_init(&$a) {
 function suggest_content(&$a) {
 
 	$o = '';
-	if(! local_channel()) {
+	if(! local_user()) {
 		notice( t('Permission denied.') . EOL);
 		return;
 	}
 
 	$_SESSION['return_url'] = $a->get_baseurl() . '/' . $a->cmd;
 
-	$r = suggestion_query(local_channel(),get_observer_hash());
+	$r = suggestion_query(local_user(),get_observer_hash());
 
 	if(! $r) {
 		info( t('No suggestions available. If this is a new site, please try again in 24 hours.'));

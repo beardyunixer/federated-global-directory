@@ -14,7 +14,7 @@
 function match_content(&$a) {
 
 	$o = '';
-	if (! local_channel())
+	if (! local_user())
 		return;
 
 	$_SESSION['return_url'] = $a->get_baseurl() . '/' . $a->cmd;
@@ -22,7 +22,7 @@ function match_content(&$a) {
 	$o .= '<h2>' . t('Profile Match') . '</h2>';
 
 	$r = q("SELECT `keywords` FROM `profile` WHERE `is_default` = 1 AND `uid` = %d LIMIT 1",
-		intval(local_channel())
+		intval(local_user())
 	);
 	if (! count($r))
 		return;

@@ -1,7 +1,7 @@
 <?php
 
 function uexport_init(&$a) {
-	if(! local_channel())
+	if(! local_user())
 		killme();
 
 	if(argc() > 1) {
@@ -21,12 +21,12 @@ function uexport_init(&$a) {
 		header('content-disposition: attachment; filename="' . $channel['channel_address'] . (($year) ? '-' . $year : '') . (($month) ? '-' . $month : '') . '.json"' );
 
 		if($year) {
-			echo json_encode(identity_export_year(local_channel(),$year,$month));
+			echo json_encode(identity_export_year(local_user(),$year,$month));
 			killme();
 		}
 
 		if(argc() > 1 && argv(1) === 'basic') {
-			echo json_encode(identity_basic_export(local_channel()));
+			echo json_encode(identity_basic_export(local_user()));
 			killme();
 		}
 
@@ -34,7 +34,7 @@ function uexport_init(&$a) {
 		// It probably needs to be built at the CLI and offered to download as a tarball.  Maybe stored in the members dav.
 
 		if(argc() > 1 && argv(1) === 'complete') {
-			echo json_encode(identity_basic_export(local_channel(),true));
+			echo json_encode(identity_basic_export(local_user(),true));
 			killme();
 		}
 	}

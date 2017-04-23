@@ -12,7 +12,7 @@ require_once('include/text.php');
 function photos_init(&$a) {
 
 
-	if((get_config('system','block_public')) && (! local_channel()) && (! remote_channel())) {
+	if((get_config('system','block_public')) && (! local_user()) && (! remote_channel())) {
 		return;
 	}
 
@@ -123,11 +123,11 @@ function photos_post(&$a) {
 
 			// get the list of photos we are about to delete
 
-			if(remote_channel() && (! local_channel())) {
+			if(remote_channel() && (! local_user())) {
 				$str = photos_album_get_db_idstr($page_owner_uid,$album,remote_channel());
 			}
-			elseif(local_channel()) {
-				$str = photos_album_get_db_idstr(local_channel(),$album);
+			elseif(local_user()) {
+				$str = photos_album_get_db_idstr(local_user(),$album);
 			}
 			else {
 				$str = null;
@@ -167,7 +167,7 @@ function photos_post(&$a) {
 
 		$r = q("SELECT `id`, `resource_id` FROM `photo` WHERE ( xchan = '%s' or `uid` = %d ) AND `resource_id` = '%s' LIMIT 1",
 			dbesc($ob_hash),
-			intval(local_channel()),
+			intval(local_user()),
 			dbesc($a->argv[2])
 		);
 
@@ -355,7 +355,7 @@ function photos_post(&$a) {
 			require_once('include/text.php');
 			$profile_uid = $a->profile['profile_uid'];
 
-			$results = linkify_tags($a, $rawtags, (local_channel()) ? local_channel() : $profile_uid);
+			$results = linkify_tags($a, $rawtags, (local_user()) ? local_user() : $profile_uid);
 
 			$success = $results['success'];
 			$post_tags = array();
@@ -407,7 +407,7 @@ function photos_post(&$a) {
 
 	$_REQUEST['source'] = 'photos';
 
-	if(!local_channel()) {
+	if(!local_user()) {
 		$_REQUEST['contact_allow'] = expand_acl($channel['channel_allow_cid']);
 		$_REQUEST['group_allow'] = expand_acl($channel['channel_allow_gid']);
 		$_REQUEST['contact_deny'] = expand_acl($channel['channel_deny_cid']);
@@ -437,7 +437,7 @@ function photos_content(&$a) {
 	// photos/name/image/xxxxx
 
 
-	if((get_config('system','block_public')) && (! local_channel()) && (! remote_channel())) {
+	if((get_config('system','block_public')) && (! local_user()) && (! remote_channel())) {
 		notice( t('Public access denied.') . EOL);
 		return;
 	}
@@ -506,7 +506,7 @@ function photos_content(&$a) {
 
 	// tabs
 
-	$_is_owner = (local_channel() && (local_channel() == $owner_uid));
+	$_is_owner = (local_user() && (local_user() == $owner_uid));
 	$o .= profile_tabs($a,$_is_owner, $a->data['channel']['channel_address']);	
 
 	/**
@@ -890,10 +890,10 @@ function photos_content(&$a) {
 				}
 			}
 
-			if((local_channel()) && (local_channel() == $link_item['uid'])) {
+			if((local_user()) && (local_user() == $link_item['uid'])) {
 				q("UPDATE `item` SET item_unseen = 0 WHERE item_unseen = 1 AND parent = %d AND uid = %d ",
 					intval($link_item['parent']),
-					intval(local_channel())
+					intval(local_user())
 				);
 			}
 

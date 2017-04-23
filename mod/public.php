@@ -23,14 +23,14 @@ function public_content(&$a, $update = 0, $load = false) {
 			$maxheight = 75;
 
 		$o .= '<div id="live-public"></div>' . "\r\n";
-		$o .= "<script> var profile_uid = " . ((intval(local_channel())) ? local_channel() : (-1)) 
+		$o .= "<script> var profile_uid = " . ((intval(local_user())) ? local_user() : (-1)) 
 			. "; var profile_page = " . $a->pager['page'] 
 			. "; divmore_height = " . intval($maxheight) . "; </script>\r\n";
 
 		$a->page['htmlhead'] .= replace_macros(get_markup_template("build_query.tpl"),array(
 			'$baseurl' => z_root(),
 			'$pgtype'  => 'public',
-			'$uid'     => ((local_channel()) ? local_channel() : '0'),
+			'$uid'     => ((local_user()) ? local_user() : '0'),
 			'$gid'     => '0',
 			'$cid'     => '0',
 			'$cmin'    => '0',

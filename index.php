@@ -106,7 +106,7 @@ if((x($_SESSION, 'language')) && ($_SESSION['language'] !== $lang)) {
 
 if((x($_GET,'zid')) && (! $a->install)) {
 	$a->query_string = strip_zids($a->query_string);
-	if(! local_channel()) {
+	if(! local_user()) {
 		$_SESSION['my_address'] = $_GET['zid'];
 		zid_init($a);
 	}
@@ -382,7 +382,7 @@ if($a->module_loaded) {
 
 if(x($_SESSION, 'visitor_home')) {
 	$homebase = $_SESSION['visitor_home'];
-} elseif(local_channel()) {
+} elseif(local_user()) {
 	$homebase = $a->get_baseurl() . '/channel/' . $a->channel['channel_address'];
 }
 

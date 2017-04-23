@@ -35,7 +35,7 @@ function webpages_content(&$a) {
 	
 	$_SESSION['return_url'] = $a->query_string;
 
-	$uid = local_channel();
+	$uid = local_user();
 	$owner = 0;
 	$channel = null;
 	$observer = $a->get_observer();

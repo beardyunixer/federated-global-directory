@@ -15,7 +15,7 @@ function channel_init(&$a) {
 	if(argc() > 1)
 		$which = argv(1);
 	if(! $which) {
-		if(local_channel()) {
+		if(local_user()) {
 			$channel = $a->get_channel();
 			if($channel && $channel['channel_address'])
 			$which = $channel['channel_address'];
@@ -29,7 +29,7 @@ function channel_init(&$a) {
 	$profile = 0;
 	$channel = $a->get_channel();
 
-	if((local_channel()) && (argc() > 2) && (argv(2) === 'view')) {
+	if((local_user()) && (argc() > 2) && (argv(2) === 'view')) {
 		$which = $channel['channel_address'];
 		$profile = argv(1);		
 	}
@@ -78,12 +78,12 @@ function channel_content(&$a, $update = 0, $load = false) {
 		$a->profile['profile_uid'] = $a->profile_uid = $update;
 	}
 	else {
-		if($a->profile['profile_uid'] == local_channel()) {
+		if($a->profile['profile_uid'] == local_user()) {
 			nav_set_selected('home');
 		}
 	}
 
-	$is_owner = (((local_channel()) && ($a->profile['profile_uid'] == local_channel())) ? true : false);
+	$is_owner = (((local_user()) && ($a->profile['profile_uid'] == local_user())) ? true : false);
 
 	$channel = $a->get_channel();
 	$observer = $a->get_observer();
@@ -203,7 +203,7 @@ function channel_content(&$a, $update = 0, $load = false) {
 			$sql_extra2 .= protect_sprintf(sprintf(" AND item.created >= '%s' ", dbesc(datetime_convert(date_default_timezone_get(),'',$datequery2))));
 		}
 
-		$itemspage = get_pconfig(local_channel(),'system','itemspage');
+		$itemspage = get_pconfig(local_user(),'system','itemspage');
 		$a->set_pager_itemspage(((intval($itemspage)) ? $itemspage : 20));
 		$pager_sql = sprintf(" LIMIT %d OFFSET %d ", intval($a->pager['itemspage']), intval($a->pager['start']));
 
@@ -341,7 +341,7 @@ function channel_content(&$a, $update = 0, $load = false) {
 		$r = q("UPDATE item SET item_unseen = 0 WHERE item_unseen = 1
 			AND (item_flags & %d) > 0 AND uid = %d $update_unseen",
 			intval(ITEM_WALL),
-			intval(local_channel())
+			intval(local_user())
 		);
 	}
 
