@@ -174,7 +174,7 @@ function bb_parse_app($match) {
 function bb_parse_element($match) {
 	$j = json_decode(base64url_decode($match[1]),true);
 
-	if ($j && local_channel()) {
+	if ($j && local_user()) {
 		$text = sprintf( t('Install %s element: '), translate_design_element($j['type'])) . $j['pagetitle'];
 		$o = EOL . '<a href="#" onclick="importElement(\'' . $match[1] . '\'); return false;" >' . $text . '</a>' . EOL;
 	}

@@ -125,7 +125,7 @@ if((isset($_SESSION)) && (x($_SESSION, 'authenticated')) &&
 
 	if(((x($_POST, 'auth-params')) && ($_POST['auth-params'] === 'logout')) || ($a->module === 'logout')) {
 		// process logout request
-		$args = array('channel_id' => local_channel());
+		$args = array('channel_id' => local_user());
 		call_hooks('logging_out', $args);
 		nuke_session();
 		info( t('Logged out.') . EOL);

@@ -50,7 +50,7 @@ require_once('include/api_auth.php');
 			}
 		}			
 		if ($_SESSION["allow_api"])
-			return local_channel();
+			return local_user();
 		return false;
 	}
 
@@ -189,7 +189,7 @@ require_once('include/api_auth.php');
 
 
 		if(! is_null($contact_xchan)) {
-			$user = local_channel();
+			$user = local_user();
 			$extra_query = " and abook_xchan = '" . dbesc($contact_xchan) . "' ";
 		}
 		else {
@@ -229,7 +229,7 @@ require_once('include/api_auth.php');
 				api_login($a); 
 				return False;
 			} else {
-				$user = local_channel();
+				$user = local_user();
 				$extra_query = " AND abook_channel = %d AND (abook_flags & " . ABOOK_FLAG_SELF . " )>0 ";
 			}
 			
@@ -581,7 +581,7 @@ require_once('include/api_auth.php');
 		if(! $_REQUEST['photo_id']) return false;
 		$scale = ((array_key_exists('scale',$_REQUEST)) ? intval($_REQUEST['scale']) : 0);
 		$r = q("select id,aid,uid,xchan,resource_id,created,edited,title,description,album,filename,`type`,height,width,`size`,`scale`,profile,photo_flags,allow_cid,allow_gid,deny_cid,deny_gid from photo where uid = %d and resource_id = '%s' and scale = %d limit 1",
-			intval(local_channel()),
+			intval(local_user()),
 			dbesc($_REQUEST['photo_id']),
 			intval($scale)
 		);
@@ -595,7 +595,7 @@ require_once('include/api_auth.php');
 
 			$ret = array('photo' => $r[0]);
 			$i = q("select id from item where uid = %d and resource_type = 'photo' and resource_id = '%s' limit 1",
-				intval(local_channel()),
+				intval(local_user()),
 				dbesc($_REQUEST['photo_id'])
 			);
 			if($i) {
@@ -626,7 +626,7 @@ require_once('include/api_auth.php');
 		$scale = ((array_key_exists('scale',$_REQUEST)) ? intval($_REQUEST['scale']) : 0);
 
 		$r = q("select data from photo where uid = %d and resource_id = '%s' and scale = %d limit 1",
-			intval(local_channel()),
+			intval(local_user()),
 			dbesc($_REQUEST['photo_id']),
 			intval($scale)
 		);

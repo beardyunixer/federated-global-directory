@@ -118,7 +118,7 @@ function change_channel($change_channel) {
 			$_SESSION['uid'] = intval($r[0]['channel_id']);
 			get_app()->set_channel($r[0]);
 			$_SESSION['theme'] = $r[0]['channel_theme'];
-			$_SESSION['mobile_theme'] = get_pconfig(local_channel(),'system', 'mobile_theme');
+			$_SESSION['mobile_theme'] = get_pconfig(local_user(),'system', 'mobile_theme');
 			date_default_timezone_set($r[0]['channel_timezone']);
 			$ret = $r[0];
 		}
@@ -130,7 +130,7 @@ function change_channel($change_channel) {
 			$_SESSION['my_address'] = $r[0]['channel_address'] . '@' . substr(get_app()->get_baseurl(), strpos(get_app()->get_baseurl(), '://') + 3);
 
 			get_app()->set_observer($x[0]);
-			get_app()->set_perms(get_all_perms(local_channel(), $hash));
+			get_app()->set_perms(get_all_perms(local_user(), $hash));
 		}
 		if(! is_dir('store/' . $r[0]['channel_address']))
 			@os_mkdir('store/' . $r[0]['channel_address'], STORAGE_DEFAULT_PERMISSIONS,true);
@@ -150,7 +150,7 @@ function change_channel($change_channel) {
  */
 function permissions_sql($owner_id, $remote_observer = null) {
 
-	$local_channel = local_channel();
+	$local_user = local_user();
 
 	/**
 	 * Construct permissions
@@ -168,7 +168,7 @@ function permissions_sql($owner_id, $remote_observer = null) {
 	 * Profile owner - everything is visible
 	 */
 
-	if(($local_channel) && ($local_channel == $owner_id)) {
+	if(($local_user) && ($local_user == $owner_id)) {
 		$sql = '';
 	}
 
@@ -219,7 +219,7 @@ function permissions_sql($owner_id, $remote_observer = null) {
  */
 function item_permissions_sql($owner_id, $remote_observer = null) {
 
-	$local_channel = local_channel();
+	$local_user = local_user();
 
 	/**
 	 * Construct permissions
@@ -233,7 +233,7 @@ function item_permissions_sql($owner_id, $remote_observer = null) {
 	 * Profile owner - everything is visible
 	 */
 
-	if(($local_channel) && ($local_channel == $owner_id)) {
+	if(($local_user) && ($local_user == $owner_id)) {
 		$sql = ''; 
 	}
 
@@ -402,8 +402,8 @@ function stream_perms_api_uids($perms = NULL, $limit = 0, $rand = 0 ) {
 	$ret = array();
 	$limit_sql = (($limit) ? " LIMIT " . intval($limit) . " " : '');
 	$random_sql = (($rand) ? " ORDER BY " . db_getfunc('RAND') . " " : '');
-	if(local_channel())
-		$ret[] = local_channel();
+	if(local_user())
+		$ret[] = local_user();
 	$r = q("select channel_id from channel where channel_r_stream > 0 and ( channel_r_stream & %d )>0 and ( channel_pageflags & %d ) = 0 $random_sql $limit_sql ",
 		intval($perms),
 		intval(PAGE_ADULT|PAGE_CENSORED|PAGE_SYSTEM|PAGE_REMOVED)
@@ -434,7 +434,7 @@ function stream_perms_xchans($perms = NULL ) {
 	$perms = is_null($perms) ? (PERMS_SITE|PERMS_NETWORK|PERMS_PUBLIC) : $perms;
 
 	$ret = array();
-	if(local_channel())
+	if(local_user())
 		$ret[] = get_observer_hash();
 
 	$r = q("select channel_hash from channel where channel_r_stream > 0 and (channel_r_stream & %d)>0 and not (channel_pageflags & %d)>0",

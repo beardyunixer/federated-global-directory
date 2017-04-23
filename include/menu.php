@@ -73,8 +73,8 @@ function menu_render($menu, $class='', $edit = false, $var = array()) {
 		return '';
 
 	$channel_id = ((is_array(get_app()->profile)) ? get_app()->profile['profile_uid'] : 0);
-	if ((! $channel_id) && (local_channel()))
-		$channel_id = local_channel();
+	if ((! $channel_id) && (local_user()))
+		$channel_id = local_user();
 
 	$menu_list = menu_list($channel_id);
 	$menu_names = array();
@@ -296,7 +296,7 @@ function menu_add_item($menu_id, $uid, $arr) {
 	$mitem_order = intval($arr['mitem_order']);	
 	$mitem_flags = intval($arr['mitem_flags']);
 
-	if(local_channel() == $uid) {
+	if(local_user() == $uid) {
 		$channel = get_app()->get_channel();	
 	}
 
@@ -338,7 +338,7 @@ function menu_edit_item($menu_id, $uid, $arr) {
 	$mitem_flags = intval($arr['mitem_flags']);
 
 
-	if(local_channel() == $uid) {
+	if(local_user() == $uid) {
 		$channel = get_app()->get_channel();	
 	}
 

@@ -23,7 +23,7 @@ EOT;
 
 
 
-	if(local_channel()) {
+	if(local_user()) {
 		$channel = $a->get_channel();
 		$observer = $a->get_observer();
 		$prof = q("select id from profile where uid = %d and is_default = 1",
@@ -78,10 +78,10 @@ EOT;
 	$userinfo = null;
 	$nav['loginmenu']=array();
 
-	if(local_channel()) {
+	if(local_user()) {
 
 
-		if($chans && count($chans) > 1 && feature_enabled(local_channel(),'nav_channel_select'))
+		if($chans && count($chans) > 1 && feature_enabled(local_user(),'nav_channel_select'))
 			$nav['channels'] = $chans;
 
 		$nav['logout'] = Array('logout',t('Logout'), "", t('End this session'),'logout_nav_btn');
@@ -89,7 +89,7 @@ EOT;
 		// user menu
 		$nav['usermenu'][] = Array('channel/' . $channel['channel_address'], t('Home'), "", t('Your posts and conversations'),'channel_nav_btn');
 		$nav['usermenu'][] = Array('profile/' . $channel['channel_address'], t('View Profile'), "", t('Your profile page'),'profile_nav_btn');
-		if(feature_enabled(local_channel(),'multi_profiles'))
+		if(feature_enabled(local_user(),'multi_profiles'))
 			$nav['usermenu'][]   = Array('profiles', t('Edit Profiles'),"", t('Manage/Edit profiles'),'profiles_nav_btn');
 		else
 			$nav['usermenu'][]   = Array('profiles/' . $prof[0]['id'], t('Edit Profile'),"", t('Edit your profile'),'profiles_nav_btn');
@@ -98,13 +98,13 @@ EOT;
 		$nav['usermenu'][] = Array('cloud/' . $channel['channel_address'],t('Files'),"",t('Your files'),'cloud_nav_btn');
 
 		require_once('include/chat.php');
-		$has_chats = chatroom_list_count(local_channel());
+		$has_chats = chatroom_list_count(local_user());
 		if($has_chats) {
 			$nav['usermenu'][] = Array('chat/' . $channel['channel_address'],t('Chat'),"",t('Your chatrooms'),'chat_nav_btn');
 		}
 
 		require_once('include/menu.php');
-		$has_bookmarks = menu_list_count(local_channel(),'',MENU_BOOKMARK) + menu_list_count(local_channel(),'',MENU_SYSTEM|MENU_BOOKMARK);
+		$has_bookmarks = menu_list_count(local_user(),'',MENU_BOOKMARK) + menu_list_count(local_user(),'',MENU_SYSTEM|MENU_BOOKMARK);
 		if($has_bookmarks) {
 			$nav['usermenu'][] = Array('bookmarks', t('Bookmarks'), "", t('Your bookmarks'),'bookmarks_nav_btn');
 		}
@@ -147,11 +147,11 @@ EOT;
 		$homelink = (($observer) ? $observer['xchan_url'] : '');
 	}
 
-	if(($a->module != 'home') && (! (local_channel()))) 
+	if(($a->module != 'home') && (! (local_user()))) 
 		$nav['home'] = array($homelink, t('Home'), "", t('Home Page'),'home_nav_btn');
 
 
-	if(($a->config['system']['register_policy'] == REGISTER_OPEN) && (! local_channel()) && (! remote_channel()))
+	if(($a->config['system']['register_policy'] == REGISTER_OPEN) && (! local_user()) && (! remote_channel()))
 		$nav['register'] = array('register',t('Register'), "", t('Create an account'),'register_nav_btn');
 
 	$help_url = z_root() . '/help?f=&cmd=' . $a->cmd;
@@ -174,7 +174,7 @@ EOT;
 	 *
 	 */
 
-	if(local_channel()) {
+	if(local_user()) {
 
 	
 		$nav['network'] = array('network', t('Matrix'), "", t('Your matrix'),'network_nav_btn');
@@ -246,7 +246,7 @@ $powered_by = '';
 		'$banner' =>  $banner,
 		'$emptynotifications' => t('Loading...'),
 		'$userinfo' => $x['usermenu'],
-		'$localuser' => local_channel(),
+		'$localuser' => local_user(),
 		'$sel' => 	$a->nav_sel,
 		'$powered_by' => $powered_by,
 		'$help' => t('@name, #tag, content'),

@@ -640,7 +640,7 @@ function account_service_class_allows($aid, $property, $usage = false) {
  */
 function service_class_fetch($uid, $property) {
 	$a = get_app();
-	if($uid == local_channel()) {
+	if($uid == local_user()) {
 		$service_class = $a->account['account_service_class'];
 	}
 	else {

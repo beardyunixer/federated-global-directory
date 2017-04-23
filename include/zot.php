@@ -2818,7 +2818,7 @@ function build_sync_packet($uid = 0, $packet = null, $groups_changed = false) {
 		logger('packet: ' . print_r($packet, true),LOGGER_DATA);
 
 	if(! $uid)
-		$uid = local_channel();
+		$uid = local_user();
 
 	if(! $uid)
 		return;

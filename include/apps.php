@@ -88,15 +88,15 @@ function parse_app_description($f) {
 			$require = trim(strtolower($require));
 			switch($require) {
 				case 'nologin':
-					if(local_channel())
+					if(local_user())
 						unset($ret);
 					break;
 				case 'admin':
 					if(! is_site_admin())
 						unset($ret);
 					break;
-				case 'local_channel':
-					if(! local_channel())
+				case 'local_user':
+					if(! local_user())
 						unset($ret);
 					break;
 				case 'public_profile':
@@ -108,7 +108,7 @@ function parse_app_description($f) {
 						unset($ret);
 					break;
 				default:
-					if(! (local_channel() && feature_enabled(local_channel(),$require)))
+					if(! (local_user() && feature_enabled(local_user(),$require)))
 						unset($ret);
 					break;
 
@@ -196,15 +196,15 @@ function app_render($papp,$mode = 'view') {
 				$require = trim(strtolower($require));
 				switch($require) {
 					case 'nologin':
-						if(local_channel())
+						if(local_user())
 							return '';
 						break;
 					case 'admin':
 						if(! is_site_admin())
 							return '';
 						break;
-					case 'local_channel':
-						if(! local_channel())
+					case 'local_user':
+						if(! local_user())
 							return '';
 						break;
 					case 'public_profile':
@@ -217,7 +217,7 @@ function app_render($papp,$mode = 'view') {
 							return '';
 						break;
 					default:
-						if(! (local_channel() && feature_enabled(local_channel(),$require)))
+						if(! (local_user() && feature_enabled(local_user(),$require)))
 							return '';
 						break;
 
@@ -229,8 +229,8 @@ function app_render($papp,$mode = 'view') {
 
 	$hosturl = '';
 
-	if(local_channel()) {
-		$installed = app_installed(local_channel(),$papp);
+	if(local_user()) {
+		$installed = app_installed(local_user(),$papp);
 		$hosturl = z_root() . '/';
 	}
 	elseif(remote_channel()) {
@@ -251,8 +251,8 @@ function app_render($papp,$mode = 'view') {
 		'$hosturl' => $hosturl,
 		'$purchase' => (($papp['page'] && (! $installed)) ? t('Purchase') : ''),
 		'$install' => (($hosturl && $mode == 'view') ? $install_action : ''),
-		'$edit' => ((local_channel() && $installed && $mode == 'edit') ? t('Edit') : ''),
-		'$delete' => ((local_channel() && $installed && $mode == 'edit') ? t('Delete') : '')
+		'$edit' => ((local_user() && $installed && $mode == 'edit') ? t('Edit') : ''),
+		'$delete' => ((local_user() && $installed && $mode == 'edit') ? t('Delete') : '')
 	));
 }
 
