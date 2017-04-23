@@ -81,7 +81,7 @@ $DIRECTORY_FALLBACK_SERVERS = array(
 );
 
 $FRIENDICA_DIRECTORY_SERVERS = array( 
-	'placeholder'
+	'https://fd.beardyunixer.com/submit',
 );
 
 /**

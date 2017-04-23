@@ -1063,7 +1063,7 @@ function discover_by_url($url,$arr = null) {
 
 }
 
-function discover_by_webbie($webbie,$suppresssync = 0) {
+function discover_by_webbie($webbie) {
 	require_once('library/HTML5/Parser.php');
 
 	$webbie = strtolower($webbie);
@@ -1190,7 +1190,7 @@ function discover_by_webbie($webbie,$suppresssync = 0) {
 		//FIXME - we still need to create an update record when updated evaluates to true
 		// which never happens at all yet, but should.
 
-		$r = q("select xchan_hash,xchan_flags, xchan_photo_l from xchan where xchan_hash = '%s'",
+		$r = q("select xchan_flags, xchan_photo_l from xchan where xchan_hash = '%s'",
 				dbesc($addr)
 			);
 		
@@ -1218,8 +1218,10 @@ function discover_by_webbie($webbie,$suppresssync = 0) {
 	if ($r[0]['xchan_photo_l'] != $photos[0]) 
 		$updated = 1;
 
-	if(($dirmode === DIRECTORY_MODE_SECONDARY || $dirmode === DIRECTORY_MODE_PRIMARY) && ($updated = 1) && (! $suppresssync)) {
-			//dirsync_friendica($r[0]['xchan_hash']);
+	$dirmode = intval(get_config('system','directory_mode'));
+	if(($dirmode === DIRECTORY_MODE_SECONDARY || $dirmode === DIRECTORY_MODE_PRIMARY) && ($updated = 1)) {
+		require_once('include/dir_fns.php');	
+		dirsync_friendica($addr);
 	}
   
    return true;

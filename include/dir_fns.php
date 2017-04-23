@@ -133,6 +133,24 @@ function dir_sort_links() {
 	return $o;
 }
 
+function get_friendica_dirs() {
+	global $FRIENDICA_DIRECTORY_SERVERS;
+	return $FRIENDICA_DIRECTORY_SERVERS;
+}
+
+function dirsync_friendica($url) {
+	logger('dirsync_friendica invoked');
+	$url = bin2hex($url);
+	logger('dirsync_friendica url: ' . (hex2bin($url)));
+	$hubs = get_friendica_dirs();
+	logger('hubs: ' . print_r($hubs,true));
+	foreach ($hubs as $hub) {
+			z_fetch_url($hub . '?f=&url=' . $url);
+			logger('dirsync_friendica: ' . $hub . '?f=&url=' . $url);
+	}
+}
+
+
 /**
  * @brief Checks the directory mode of this hub.
  *
