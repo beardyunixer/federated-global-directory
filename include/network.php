@@ -1063,7 +1063,7 @@ function discover_by_url($url,$arr = null) {
 
 }
 
-function discover_by_webbie($webbie) {
+function discover_by_webbie($webbie, $suppresssync = 0) {
 	require_once('library/HTML5/Parser.php');
 
 	$webbie = strtolower($webbie);
@@ -1219,7 +1219,7 @@ function discover_by_webbie($webbie) {
 		$updated = 1;
 
 	$dirmode = intval(get_config('system','directory_mode'));
-	if(($dirmode === DIRECTORY_MODE_SECONDARY || $dirmode === DIRECTORY_MODE_PRIMARY) && ($updated = 1)) {
+	if(($dirmode === DIRECTORY_MODE_SECONDARY || $dirmode === DIRECTORY_MODE_PRIMARY) && ($updated = 1) && (! $suppresssync)){
 		if ($network == 'friendica-over-diaspora') {
 		require_once('include/dir_fns.php');	
 		dirsync_friendica($r[0]['xchan_url']);
