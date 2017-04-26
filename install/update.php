@@ -1791,4 +1791,8 @@ function update_r1158() {
 function update_r1159() {
 	return UPDATE_SUCCESS;
 }
+function update_r1160() {
+	$r1 = q("alter table xchan add xchan_updated DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ");
+	return UPDATE_SUCCESS;
+}
 
