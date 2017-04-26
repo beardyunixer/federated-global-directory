@@ -2,17 +2,19 @@
 
 function sync_content(&$a) {
 // sync/all
-  //Find all the profiles.
+	$profiles = array();
+
   $r = q("select xchan_url from xchan where xchan_network = 'friendica-over-diaspora'");
 
-  //This removes the keys, so it's a flat array.  Apparently.
-  $results = array_values($r);
+  foreach($r as $row) $profiles[$row['xchan_url']] = $row['xchan_url'];
+  $results = array_values($profiles);
   
-  //Format it nicely.
-  return array(
+  $data = array(
     'now' => datetime_convert('UTC','UTC','now'),
     'count' => count($results),
     'results' => $results
   );
   
+json_return_and_die($data);
+
 }
