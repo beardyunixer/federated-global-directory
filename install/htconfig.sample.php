@@ -68,8 +68,12 @@ $a->config['system']['php_path'] = 'php';
 // DIRECTORY_MODE_SECONDARY  = caching directory or mirror (keeps in sync with realm primary [adds significant cron execution time])
 // DIRECTORY_MODE_PRIMARY    = main directory server (you do not want this unless you are operating your own realm. one per realm.)
 // DIRECTORY_MODE_STANDALONE = "off the grid" or private directory services (only local site members in directory)
+// This is the setting for global, federated, platform agnostic directories.
+$a->config['system']['global_directory_mode']  = DIRECTORY_MODE_NORMAL;
 
+// As above, but for Hubzilla directories.  If you don't know what this does, make it match your global_directory_mode
 $a->config['system']['directory_mode']  = DIRECTORY_MODE_NORMAL;
+
 
 
 // PHP error logging setup
