@@ -1218,7 +1218,7 @@ function discover_by_webbie($webbie, $suppresssync = 0) {
 	if ($r[0]['xchan_photo_l'] != $photos[0]) 
 		$updated = 1;
 
-//	if ($updated = 1)
+	if ($updated = 1)
 		$x = q("update xchan set xchan_updated = '%s' where xchan_hash = '%s'",
 			dbesc(datetime_convert()),
 			dbesc($addr)
