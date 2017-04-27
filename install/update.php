@@ -1,6 +1,6 @@
 <?php
 
-define( 'UPDATE_VERSION' , 1161 );
+define( 'UPDATE_VERSION' , 1162 );
 
 /**
  *
@@ -1792,7 +1792,16 @@ function update_r1159() {
 	return UPDATE_SUCCESS;
 }
 function update_r1160() {
-	$r1 = q("alter table xchan add xchan_updated DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ");
-	return UPDATE_SUCCESS;
+	$r = q("alter table xchan add xchan_updated DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ");
+		if ($r)
+		return UPDATE_SUCCESS;
+	return UPDATE_FAILED;
+}
+function update_r1160() {
+	$r  = q("alter table site add global_realm CHAR( 255 ) NOT NULL DEFAULT '',
+			ADD INDEX ( `site_realm` )");
+	if($r)
+		return UPDATE_SUCCESS;
+	return UPDATE_FAILED;
 }
 
