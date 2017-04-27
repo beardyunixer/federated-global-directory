@@ -1797,9 +1797,10 @@ function update_r1160() {
 		return UPDATE_SUCCESS;
 	return UPDATE_FAILED;
 }
-function update_r1160() {
+function update_r1161() {
 	$r  = q("alter table site add global_realm CHAR( 255 ) NOT NULL DEFAULT '',
-			ADD INDEX ( `site_realm` )");
+			ADD INDEX ( `global_realm` )"
+	);
 	if($r)
 		return UPDATE_SUCCESS;
 	return UPDATE_FAILED;
