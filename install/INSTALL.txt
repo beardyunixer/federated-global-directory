@@ -53,7 +53,7 @@ advice. This is disruptive to the community. That said, we recognise the issues
 surrounding the current certificate infrastructure and agree there are many
 problems, but that doesn't change the requirement. 
 
-Free "browser-valid" certificates are available from providers such as StartSSL. 
+Free "browser-valid" certificates are available from providers such as Let's Encrypt. 
 
 If you do NOT use SSL, there may be a delay of up to a minute for the initial
 install script - while we check the SSL port to see if anything responds there.
@@ -65,9 +65,14 @@ use SSL, your webserver must not listen on port 443 at all.
     - Apache with mod-rewrite enabled and "AllowOverride All" so you can use a 
     local .htaccess file. Some folks have successfully used nginx and lighttpd.
 	Example config scripts are available for these platforms in doc/install.
-	Apache and nginx have the most support. 
 
-    - PHP 5.4 or later. The later the better. 
+	Nginx has the most support.
+
+    - PHP 5.4 or later. 
+		It is unclear at this point whether PHP 7 will work, due to a limit on the
+		number of developers available to test it.  We want PHP 7, but please be
+		willing to work with us to iron out any issues if you wish to be a trail
+		blazeer.
 
     - PHP *command line* access with register_argc_argv set to true in the 
     php.ini file - and with no hosting provider restrictions on the use of 
@@ -80,7 +85,12 @@ use SSL, your webserver must not listen on port 443 at all.
 
     - some form of email server or email gateway such that PHP mail() works.
 
-    - Mysql 5.x or MariaDB or postgres database server.
+    - MariaDB.
+		Due to an issue with null dates, MySQL may not work with the current release.
+		We plan to fix this before RedMatrix 3.1.  
+
+		Postgres support is considered unsupported and experimental.  If you wish to
+		usee Postgres, we would welcome a maintainer.
     
     - ability to schedule jobs with cron.
 
@@ -89,25 +99,25 @@ use SSL, your webserver must not listen on port 443 at all.
 
 2. Unpack the RedMatrix files into the root of your web server document area.
     
-     If you copy the directory tree to your webserver, make sure that you 
-    also copy .htaccess - as "dot" files are often hidden and aren't normally 
-    copied.
+	If you copy the directory tree to your webserver, and your server is Apache, make 
+	sure that you also copy .htaccess - as "dot" files are often hidden and aren't normally 
+   copied.
 
-    - If you are able to do so, we recommend using git to clone the source 
-    repository rather than to use a packaged tar or zip file.  This makes the 
-    software much easier to update. The Linux command to clone the repository 
-    into a directory "mywebsite" would be
+	 - If you are able to do so, we recommend using git to clone the source 
+	repository rather than to use a packaged tar or zip file.  This makes the 
+	software much easier to update. The Linux command to clone the repository 
+	into a directory "mywebsite" would be
 
-        git clone https://github.com/redmatrix/redmatrix.git mywebsite
+		git clone https://github.com/beardyunixer/redmatrix.git mywebsite
 
-    - and then you can pick up the latest changes at any time with
+	- and then you can pick up the latest changes at any time with
 
         git pull
 
     - make sure folders *store/[data]/smarty3* and *store* exist and are 
     writable by the webserver
 
-        mkdir -p "store/[data]/smarty3"
+		mkdir -p "store/[data]/smarty3"
 
         chmod -R 777 store
 
@@ -118,7 +128,7 @@ use SSL, your webserver must not listen on port 443 at all.
         difficult without opening a trouble ticket with your provider. The
         above permissions will allow the software to work, but are not
         optimal.]
- 
+			
     - For installing addons
 
         - First you should be **on** your website folder
@@ -129,7 +139,7 @@ use SSL, your webserver must not listen on port 443 at all.
          a nickname of 'matrix'. You can pull in other redmatrix addon repositories by 
          giving them different nicknames.
 
-            util/add_addon_repo https://github.com/redmatrix/redmatrix-addons.git matrix
+            util/add_addon_repo https://github.com/beardyunixer/redmatrix-addons.git matrix
 
     - For keeping the addon tree updated, you should be on your top level website 
 		directory and issue an update command for that repository.
