@@ -83,8 +83,11 @@ $a->config['system']['php_path'] = '{{$phpath}}';
 // DIRECTORY_MODE_SECONDARY  = caching directory or mirror
 // DIRECTORY_MODE_PRIMARY    = main directory server
 // DIRECTORY_MODE_STANDALONE = "off the grid" or private directory services
+// This is the setting for global, federated, platform agnostic directories.
+$a->config['system']['global_directory_mode']  = DIRECTORY_MODE_SECONDARY;
 
-$a->config['system']['directory_mode']  = DIRECTORY_MODE_NORMAL;
+// As above, but for Hubzilla directories.  If you don't know what this does, make it match your global_directory_mode
+$a->config['system']['directory_mode']  = DIRECTORY_MODE_SECONDARY;
 
 // default system theme
 
