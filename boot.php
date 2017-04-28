@@ -74,7 +74,7 @@ define ( 'DIRECTORY_MODE_STANDALONE',  0x0100);
 // point to go out and find the rest of the world.
 
 define ( 'DIRECTORY_REALM',            'RED_GLOBAL');
-define ( 'GLOBAL_REALM',            'INTERNET');
+define ( 'GLOBAL_REALM',					'INTERNET');
 define ( 'DIRECTORY_FALLBACK_MASTER',  'https://beardyunixer.com');
 
 $DIRECTORY_FALLBACK_SERVERS = array(
@@ -83,7 +83,7 @@ $DIRECTORY_FALLBACK_SERVERS = array(
 
 $FRIENDICA_DIRECTORY_SERVERS = array( 
 	'https://fd.beardyunixer.com/submit',
-	'https://beardyunixer.com'
+	'https://beardyunixer.com/submit'
 );
 
 /**
