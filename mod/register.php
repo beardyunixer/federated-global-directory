@@ -2,7 +2,6 @@
 
 
 function register_init(&$a) {
-
 	$result = null;
 	$cmd = ((argc() > 1) ? argv(1) : '');
 
@@ -150,6 +149,12 @@ function register_post(&$a) {
 
 
 function register_content(&$a) {
+	$r = q("select * from account where true");
+	if (count($r) >= 1){
+		info('Administrator account already exists!');
+		return;
+	}
+
 
 	$registration_is = '';
 	$other_sites = '';

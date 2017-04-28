@@ -168,11 +168,14 @@ function create_account($arr) {
 	$salt = random_string(32);
 	$password_encoded = hash('whirlpool', $salt . $password);
 
+	$syschan = get_sys_channel();
+
 	$r = q("INSERT INTO account 
-			( account_parent,  account_salt,  account_password, account_email,   account_language, 
+			( account_parent, account_default_channel, account_salt,  account_password, account_email,   account_language, 
 			  account_created, account_flags, account_roles,    account_expires, account_service_class )
-		VALUES ( %d, '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', '%s' )",
+		VALUES ( %d, %d, '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', '%s' )",
 		intval($parent),
+		intval($syschan['channel_id']),
 		dbesc($salt),
 		dbesc($password_encoded),
 		dbesc($email),
@@ -195,7 +198,12 @@ function create_account($arr) {
 	);
 	if($r && count($r)) {
 		$result['account'] = $r[0];
+		$x = q("update channel set channel_account_id = '%d' where channel_id = '%d'",
+				intval($r[0]['account_id']),
+				intval($syschan['channel_id'])
+		);
 	}
+
 	else {
 		logger('create_account: could not retrieve newly created account');
 	}
