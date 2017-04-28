@@ -5,7 +5,7 @@ function siteinfo_init(&$a) {
 	
 	if ($a->argv[1]=="json"){
 		$register_policy = Array('REGISTER_CLOSED', 'REGISTER_APPROVE', 'REGISTER_OPEN');
-		$directory_mode = Array('DIRECTORY_MODE_NORMAL', 'DIRECTORY_MODE_SECONDARY','DIRECTORY_MODE_PRIMARY', 'DIRECTORY_MODE_STANDALONE');
+		$directory_mode = Array('DIRECTORY_MODE_NORMAL', 'DIRECTORY_MODE_PRIMARY','DIRECTORY_MODE_SECONDARY', 'DIRECTORY_MODE_STANDALONE');
 		
 		$sql_extra = '';
 
