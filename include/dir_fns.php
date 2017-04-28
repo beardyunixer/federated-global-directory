@@ -145,6 +145,9 @@ function dirsync_friendica($url) {
 	$hubs = get_friendica_dirs();
 	logger('hubs: ' . print_r($hubs,true));
 	foreach ($hubs as $hub) {
+			// Prevent sending yourself an update
+			if ($hub == z_root())
+				continue;
 			z_fetch_url($hub . '?f=&url=' . $url);
 			logger('dirsync_friendica: ' . $hub . '?f=&url=' . $url);
 	}
