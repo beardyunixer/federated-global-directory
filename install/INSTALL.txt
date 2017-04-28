@@ -119,33 +119,41 @@ use SSL, your webserver must not listen on port 443 at all.
 
 		mkdir -p "store/[data]/smarty3"
 
-        chmod -R 777 store
-
-        [This permission (777) is very dangerous and if you have sufficient
-        privilege and knowledge you should make these directories writeable
-        only by the webserver and, if different, the user that will run the
-        cron job (see below). In many shared hosting environments this may be
-        difficult without opening a trouble ticket with your provider. The
-        above permissions will allow the software to work, but are not
-        optimal.]
+		Make this directory writeable by the webserver.  On a typical Nginx installation
+		you can acheive this with 
 			
-    - For installing addons
+			chown www-data:www-data store
+      
+		If all else fails, you can try 
 
-        - First you should be **on** your website folder
+			chmod -R 777 store
 
-            cd mywebsite
+		[This permission (777) is very dangerous and if you have sufficient
+		privilege and knowledge you should make these directories writeable
+		only by the webserver and, if different, the user that will run the
+		cron job (see below). In many shared hosting environments this may be
+		difficult without opening a trouble ticket with your provider. The
+		above permissions will allow the software to work, but are not
+		optimal.  If you take this path, it is recommended you use one of the
+		support forums after install to find a better way to configure this]
+			
+	- For installing addons
 
-    - Then you should clone the addon repository (separately). We'll give this repository
-         a nickname of 'matrix'. You can pull in other redmatrix addon repositories by 
-         giving them different nicknames.
+		- First you should be **on** your website folder
 
-            util/add_addon_repo https://github.com/beardyunixer/redmatrix-addons.git matrix
+			cd mywebsite
 
-    - For keeping the addon tree updated, you should be on your top level website 
-		directory and issue an update command for that repository.
+	- Then you should clone the addon repository (separately). We'll give this repository
+		a nickname of 'matrix'. You can pull in other redmatrix addon repositories by 
+		giving them different nicknames.
 
-            cd mywebsite
-            util/update_addon_repo matrix
+			util/add_addon_repo https://github.com/beardyunixer/redmatrix-addons.git matrix
+
+		- For keeping the addon tree updated, you should be on your top level website 
+			directory and issue an update command for that repository.
+
+				cd mywebsite
+				util/update_addon_repo matrix
 
 
 3. Create an empty database and note the access details (hostname, username, 
