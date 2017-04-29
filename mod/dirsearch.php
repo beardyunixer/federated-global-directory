@@ -12,7 +12,7 @@ function dirsearch_content(&$a) {
 
 	$ret = array('success' => false);
 
-//	logger('request: ' . print_r($_REQUEST,true));
+	logger('request: ' . print_r($_REQUEST,true));
 
 
 	$dirmode = intval(get_config('system','directory_mode'));
@@ -59,23 +59,27 @@ function dirsearch_content(&$a) {
 
 	$hash     = ((x($_REQUEST['hash']))    ? $_REQUEST['hash']     : '');
 
-	$name     = ((x($_REQUEST,'name'))     ? $_REQUEST['name']     : '');
-	$hub      = ((x($_REQUEST,'hub'))      ? $_REQUEST['hub']      : '');
-	$address  = ((x($_REQUEST,'address'))  ? $_REQUEST['address']  : '');
-	$locale   = ((x($_REQUEST,'locale'))   ? $_REQUEST['locale']   : '');
-	$region   = ((x($_REQUEST,'region'))   ? $_REQUEST['region']   : '');
-	$postcode = ((x($_REQUEST,'postcode')) ? $_REQUEST['postcode'] : '');
-	$country  = ((x($_REQUEST,'country'))  ? $_REQUEST['country']  : '');
-	$gender   = ((x($_REQUEST,'gender'))   ? $_REQUEST['gender']   : '');
-	$marital  = ((x($_REQUEST,'marital'))  ? $_REQUEST['marital']  : '');
-	$sexual   = ((x($_REQUEST,'sexual'))   ? $_REQUEST['sexual']   : '');
-	$keywords = ((x($_REQUEST,'keywords')) ? $_REQUEST['keywords'] : '');
-	$agege    = ((x($_REQUEST,'agege'))    ? intval($_REQUEST['agege']) : 0 );
-	$agele    = ((x($_REQUEST,'agele'))    ? intval($_REQUEST['agele']) : 0 );
-	$kw       = ((x($_REQUEST,'kw'))       ? intval($_REQUEST['kw'])    : 0 );
-	$forums   = ((array_key_exists('pubforums',$_REQUEST)) ? intval($_REQUEST['pubforums']) : 0);
+	$name			= ((x($_REQUEST,'name'))     ? $_REQUEST['name']     : '');
+	$hub			= ((x($_REQUEST,'hub'))      ? $_REQUEST['hub']      : '');
+	$address		= ((x($_REQUEST,'address'))  ? $_REQUEST['address']  : '');
+	$locale		= ((x($_REQUEST,'locale'))   ? $_REQUEST['locale']   : '');
+	$region		= ((x($_REQUEST,'region'))   ? $_REQUEST['region']   : '');
+	$postcode	= ((x($_REQUEST,'postcode')) ? $_REQUEST['postcode'] : '');
+	$country		= ((x($_REQUEST,'country'))  ? $_REQUEST['country']  : '');
+	$gender		= ((x($_REQUEST,'gender'))   ? $_REQUEST['gender']   : '');
+	$marital		= ((x($_REQUEST,'marital'))  ? $_REQUEST['marital']  : '');
+	$sexual		= ((x($_REQUEST,'sexual'))   ? $_REQUEST['sexual']   : '');
+	$keywords	= ((x($_REQUEST,'keywords')) ? $_REQUEST['keywords'] : '');
+	$agege		= ((x($_REQUEST,'agege'))    ? intval($_REQUEST['agege']) : 0 );
+	$agele		= ((x($_REQUEST,'agele'))    ? intval($_REQUEST['agele']) : 0 );
+	$kw			= ((x($_REQUEST,'kw'))       ? intval($_REQUEST['kw'])    : 0 );
+	$forums		= ((array_key_exists('pubforums',$_REQUEST)) ? intval($_REQUEST['pubforums']) : 0);
 
-
+	$dfrn			= ((array_key_exists('dfrn',$_REQUEST)) ? intval($_REQUEST['dfrn']) : 0);
+	$zot			= ((array_key_exists('zot',$_REQUEST)) ? intval($_REQUEST['zot']) : 0);
+	$rss			= ((array_key_exists('rss',$_REQUEST)) ? intval($_REQUEST['rss']) : 0);
+	$dspr			= ((array_key_exists('dspr',$_REQUEST)) ? intval($_REQUEST['dspr']) : 0);
+	$ostat		= ((array_key_exists('ostat',$_REQUEST)) ? intval($_REQUEST['ostat']) : 0);
 
 	// by default use a safe search
 	$safe     = ((x($_REQUEST,'safe')));    // ? intval($_REQUEST['safe'])  : 1 );
@@ -127,6 +131,16 @@ function dirsearch_content(&$a) {
 	if($forums)
 		$safesql .= dir_flag_build(' AND ','xchan_flags',XCHAN_FLAGS_PUBFORUM, $forums);
 
+	if($dfrn)
+		$sql_extra .= dir_protocol_build($joiner,'xchan_network','friendica-over-diaspora');
+	if($zot)
+		$sql_extra .= dir_protocol_build($joiner,'xchan_network','zot');
+	if($rss)
+		$sql_extra .= dir_protocol_build($joiner,'xchan_network','rss');
+	if($dspr)
+		$sql_extra .= dir_protocol_build($joiner,'xchan_network','diaspora');
+	if($ostat)
+		$sql_extra .= dir_protocol_build($joiner,'xchan_network','ostatus');
 
 	// we only support an age range currently. You must set both agege 
 	// (greater than or equal) and agele (less than or equal) 
@@ -334,6 +348,13 @@ function dir_flag_build($joiner,$field,$bit,$s) {
 	return dbesc($joiner) . " ( " . dbesc($field) . " & " . intval($bit) . " ) " . ((intval($s)) ? '>' : '=' ) . " 0 ";
 }
 
+function dir_protocol_build($joiner,$field,$s) {
+	$ret = '';
+	if(trim($s))
+		$ret .= dbesc($joiner) . " " . dbesc($field) . " = '" . protect_sprintf(dbesc($s)) . "' ";
+		logger('dir_protocol_build query: ' . print_r($ret,true));
+	return $ret;
+}
 
 function dir_parse_query($s) {
 
