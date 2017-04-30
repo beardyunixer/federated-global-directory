@@ -21,16 +21,6 @@ function directory_init(&$a) {
 	$safe_changed = false;
 	$pubforums_changed = false;
 
-	if(array_key_exists('global',$_REQUEST)) {
-		$globaldir = intval($_REQUEST['global']);
-		$global_changed = true;
-	}
-	if($global_changed) {
-		$_SESSION['globaldir'] = $globaldir;
-		if($observer)
-			set_xconfig($observer,'directory','globaldir',$globaldir);
-	}
-
 	if(array_key_exists('safe',$_REQUEST)) {
 		$safemode = intval($_REQUEST['safe']);
 		$safe_changed = true;
