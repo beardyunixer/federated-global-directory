@@ -8,14 +8,6 @@ require_once('include/bbcode.php');
 function directory_init(&$a) {
 	$a->set_pager_itemspage(60);
 
-	if(x($_GET,'ignore')) {
-		q("insert into xign ( uid, xchan ) values ( %d, '%s' ) ",
-			intval(local_user()),
-			dbesc($_GET['ignore'])
-		);
-		goaway(z_root() . '/directory?suggest=1');
-	}
-
 	$observer = get_observer_hash();
 	$global_changed = false;
 	$safe_changed = false;
@@ -45,17 +37,7 @@ function directory_init(&$a) {
 
 function directory_content(&$a) {
 
-	if((get_config('system','block_public')) && (! local_user()) && (! remote_channel())) {
-		notice( t('Public access denied.') . EOL);
-		return;
-	}
-
 	$observer = get_observer_hash();
-
-	$globaldir = get_directory_setting($observer, 'globaldir');
-	// override your personal global search pref if we're doing a navbar search of the directory
-	if(intval($_REQUEST['navsearch']))
-		$globaldir = 1;
 
 	$safe_mode = get_directory_setting($observer, 'safemode');
 
@@ -69,67 +51,25 @@ function directory_content(&$a) {
 	else
 		$search = ((x($_GET,'search')) ? notags(trim(rawurldecode($_GET['search']))) : '');
 
-
-	if(strpos($search,'=') && local_user() && get_pconfig(local_user(),'feature','expert'))
 		$advanced = $search;
 
 
 	$keywords = (($_GET['keywords']) ? $_GET['keywords'] : '');
 
-	// Suggest channels if no search terms or keywords are given
-	$suggest = (local_user() && x($_REQUEST,'suggest')) ? $_REQUEST['suggest'] : '';
-
-	if($suggest) {
-
-		$r = suggestion_query(local_user(),get_observer_hash());
-
-		// Remember in which order the suggestions were
-		$addresses = array();
-		$common = array();
-		$index = 0;
-		foreach($r as $rr) {
-			$common[$rr['xchan_addr']] = $rr['total'];
-			$addresses[$rr['xchan_addr']] = $index++;
-		}
-
-		// Build query to get info about suggested people
-		$advanced = '';
-		foreach(array_keys($addresses) as $address) {
-			$advanced .= "address=\"$address\" ";
-		}
-		// Remove last space in the advanced query
-		$advanced = rtrim($advanced);
-
-	}
-
 	$tpl = get_markup_template('directory_header.tpl');
 
-	$dirmode = intval(get_config('system','directory_mode'));
+	$url = z_root() . '/dirsearch';
 
-	if(($dirmode == DIRECTORY_MODE_PRIMARY) || ($dirmode == DIRECTORY_MODE_STANDALONE)) {
-		$url = z_root() . '/dirsearch';
-	}
 	if(! $url) {
-		$directory = find_upstream_directory($dirmode);
-		$url = $directory['url'] . '/dirsearch';
+		info('Something went horribly wrong');
+		return;
 	}
 
 	$token = get_config('system','realm_token');
 
-
 	logger('mod_directory: URL = ' . $url, LOGGER_DEBUG);
 
 	$contacts = array();
-
-	if(local_user()) {
-		$x = q("select abook_xchan from abook where abook_channel = %d",
-			intval(local_user())
-		);
-		if($x) {
-			foreach($x as $xx)
-				$contacts[] = $xx['abook_xchan'];
-		}
-	}
 
 	if($url) {
 		// We might want to make the tagadelic count (&kw=) configurable or turn it off completely.
@@ -141,9 +81,6 @@ function directory_content(&$a) {
 
 		if($token)
 			$query .= '&t=' . $token;
-
-		if(! $globaldir)
-			$query .= '&hub=' . get_app()->get_hostname();
 
 		if($search)
 			$query .= '&name=' . urlencode($search) . '&keywords=' . urlencode($search);
