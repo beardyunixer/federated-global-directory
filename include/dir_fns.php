@@ -150,7 +150,7 @@ function dirsync_friendica($url,$self = 0) {
 				// Prevent sending yourself an update
 				if ($hub == $thishub)
 					continue;
-				z_fetch_url($hub . '?f=&url=' . $url);
+				z_fetch_url($hub . '/submit/?f=&url=' . $url);
 				logger('dirsync_friendica: ' . $hub . '?f=&url=' . $url);
 		}
 	}
