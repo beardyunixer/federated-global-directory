@@ -68,6 +68,11 @@ function poller_run($argv, $argc){
 			 *
 			 */
 
+			// Once a week, poll a Friendica directory to pickup anything we missed.
+
+         $date = strtotime(datetime_convert('UTC','UTC','now - 7 days'));
+         proc_run('php','include/friendicadirpull.php','pull','since',$date);
+
 
 			call_hooks('cron_weekly',datetime_convert());
 

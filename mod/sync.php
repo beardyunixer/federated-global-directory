@@ -12,7 +12,9 @@ function sync_content(&$a) {
 
   $r = q("select xchan_url from xchan where xchan_network = 'friendica-over-diaspora' $SQL_EXTRA");
 
-  foreach($r as $row) $profiles[$row['xchan_url']] = $row['xchan_url'];
+  foreach($r as $row) 
+	$profiles[$row['xchan_url']] = $row['xchan_url'];
+
   $results = array_values($profiles);
   
   $data = array(

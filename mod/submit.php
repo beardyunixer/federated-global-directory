@@ -1,8 +1,7 @@
 <?php
 function submit_init(&$a) {
 	$url = hex2bin(notags(trim($_GET['url'])));
-
-	$sync = 1;
+	$suppresssync = 0;
 
 	// Friendica adds submit to the URL provided in the admin panel.
 	// We can abuse this.  If we tell users to add directory/submit
@@ -14,7 +13,7 @@ function submit_init(&$a) {
 	// got my head round it yet...
 
    if (argv(1) === 'submit');
-		$sync = 0;
+		$suppresssync = 1;
 
 	if ($url) {
 		$where = parse_url($url, PHP_URL_HOST);

@@ -138,22 +138,26 @@ function get_friendica_dirs() {
 	return $FRIENDICA_DIRECTORY_SERVERS;
 }
 
-function dirsync_friendica($url) {
+function dirsync_friendica($url,$self = 0) {
 	logger('dirsync_friendica invoked');
 	$url = bin2hex($url);
 	logger('dirsync_friendica url: ' . (hex2bin($url)));
 	$hubs = get_friendica_dirs();
 	logger('hubs: ' . print_r($hubs,true));
 	$thishub = z_root() . '/submit';
-	foreach ($hubs as $hub) {
-			// Prevent sending yourself an update
-			if ($hub == $thishub)
-				continue;
-			z_fetch_url($hub . '?f=&url=' . $url);
-			logger('dirsync_friendica: ' . $hub . '?f=&url=' . $url);
+	if ($self == 0) {
+		foreach ($hubs as $hub) {
+				// Prevent sending yourself an update
+				if ($hub == $thishub)
+					continue;
+				z_fetch_url($hub . '?f=&url=' . $url);
+				logger('dirsync_friendica: ' . $hub . '?f=&url=' . $url);
+		}
 	}
-}
 
+	if ($self == 1)
+		z_fetch_url(z_root() . '/submit/submit/?f=&url=' . $url);
+}
 
 /**
  * @brief Checks the directory mode of this hub.
