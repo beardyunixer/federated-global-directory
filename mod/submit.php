@@ -15,18 +15,21 @@ function submit_init(&$a) {
    if (argv(1) === 'submit');
 		$suppresssync = 1;
 
+		dlogger('Sync: ' . $sync);
+
 	if ($url) {
 		$where = parse_url($url, PHP_URL_HOST);
 		$who = str_replace('/profile/', '', parse_url($url, PHP_URL_PATH));
 		$webbie = $who . '@' . $where;
-		$import = discover_by_webbie($webbie,$sync);
+		$import = discover_by_webbie($webbie,$suppresssync);
+		dlogger('Webbie: ' . $webbie);
 
 		// FIXME - not entirely convinced this works (read, this probably
 		//	does not work.  Revisit when everything is basically working.
 			if (! $import) {
 				$vcard = scrape_vcard($url);
 					if ($vcard['webbie'])
-						$import = discover_by_webbie($vcard['webbie'],$sync);
+						$import = discover_by_webbie($vcard['webbie'],$suppresssync);
 			}
 		}
 
