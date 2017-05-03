@@ -468,8 +468,8 @@ function conversation(&$a, $items, $mode, $update, $page_mode = 'traditional', $
 	if (local_user())
 		$str_blocked = get_pconfig(local_user(),'system','blocked');
 	if (! local_user() && ($mode == 'network')) {
-		$sys = get_sys_channel();
-		$id = $sys['channel_id'];
+		$spam = get_spam_channel();
+		$id = $spam['channel_id'];
  		$str_blocked = get_pconfig($id,'system','blocked');
 	}
 
@@ -728,7 +728,7 @@ function conversation(&$a, $items, $mode, $update, $page_mode = 'traditional', $
 					'isotime' => datetime_convert('UTC', date_default_timezone_get(), $item['created'], 'c'),
 					'localtime' => datetime_convert('UTC', date_default_timezone_get(), $item['created'], 'r'),
 					'editedtime' => (($item['edited'] != $item['created']) ? sprintf( t('last edited: %s'), datetime_convert('UTC', date_default_timezone_get(), $item['edited'], 'r')) : ''),
-					'expiretime' => (($item['expires'] !== NULL_DATE) ? sprintf( t('Expires: %s'), datetime_convert('UTC', date_default_timezone_get(), $item['expires'], 'r')):''),
+					'expiretime' => (($item['expires'] > NULL_DATE) ? sprintf( t('Expires: %s'), datetime_convert('UTC', date_default_timezone_get(), $item['expires'], 'r')):''),
 					'location' => $location,
 					'indent' => '',
 					'owner_name' => $owner_name,

@@ -183,7 +183,7 @@ function filter_insecure($channel_id, $arr) {
 
 
 function comments_are_now_closed($item) {
-	if($item['comments_closed'] !== NULL_DATE) {
+	if($item['comments_closed'] > NULL_DATE) {
 		$d = datetime_convert();
 		if($d > $item['comments_closed'])
 			return true;
@@ -1312,7 +1312,7 @@ function encode_item($item,$mirror = false) {
 	if($y = encode_item_flags($item))
 		$x['flags']       = $y;
 
-	if($item['comments_closed'] !== NULL_DATE)
+	if($item['comments_closed'] > NULL_DATE)
 		$x['comments_closed'] = $item['comments_closed'];
 
 	$x['public_scope']    = $scope;
@@ -1620,7 +1620,7 @@ function get_mail_elements($x) {
 	$arr['title']        = (($x['title'])? htmlspecialchars($x['title'],ENT_COMPAT,'UTF-8',false) : '');
 
 	$arr['created']      = datetime_convert('UTC','UTC',$x['created']);
-	if((! array_key_exists('expires',$x)) || ($x['expires'] === NULL_DATE))
+	if((! array_key_exists('expires',$x)) || ($x['expires'] <= NULL_DATE))
 		$arr['expires'] = NULL_DATE;
 	else
 		$arr['expires']      = datetime_convert('UTC','UTC',$x['expires']);
@@ -2676,7 +2676,7 @@ function item_store_update($arr,$allow_exec = false) {
 	$arr['edited']        = ((x($arr,'edited')  !== false) ? datetime_convert('UTC','UTC',$arr['edited'])  : datetime_convert());
 	$arr['expires']       = ((x($arr,'expires')  !== false) ? datetime_convert('UTC','UTC',$arr['expires'])  : $orig[0]['expires']);
 
-	if(array_key_exists('comments_closed',$arr) && $arr['comments_closed'] != NULL_DATE)
+	if(array_key_exists('comments_closed',$arr) && $arr['comments_closed'] > NULL_DATE)
 		$arr['comments_closed'] = datetime_convert('UTC','UTC',$arr['comments_closed']);
 	else
 		$arr['comments_closed'] = $orig[0]['comments_closed'];
@@ -4663,12 +4663,12 @@ function zot_feed($uid,$observer_hash,$arr) {
 		return $result;
 	}
 
-	if(! is_sys_channel($uid))
+	if(! is_spam_channel($uid))
 		$sql_extra = item_permissions_sql($uid,$observer_hash);
 
 	$limit = " LIMIT 100 ";
 
-	if($mindate != NULL_DATE) {
+	if($mindate > NULL_DATE) {
 		$sql_extra .= " and ( created > '$mindate' or changed > '$mindate' ) ";
 	}
 
@@ -4688,7 +4688,7 @@ function zot_feed($uid,$observer_hash,$arr) {
 		$groupby = 'GROUP BY parent';
 	}
 
-	if(is_sys_channel($uid)) {
+	if(is_spam_channel($uid)) {
 		$r = q("SELECT parent, created, postopts from item
 			WHERE uid != %d
 			AND item_private = 0 AND item_restrict = 0 AND uid in (" . stream_perms_api_uids(PERMS_PUBLIC,10,1) . ")
@@ -4716,7 +4716,7 @@ function zot_feed($uid,$observer_hash,$arr) {
 		}
 	
 		$parents_str = ids_to_querystr($r,'parent');
-		$sys_query = ((is_sys_channel($uid)) ? $sql_extra : '');
+		$sys_query = ((is_spam_channel($uid)) ? $sql_extra : '');
 
 		$items = q("SELECT `item`.*, `item`.`id` AS `item_id` FROM `item`
 			WHERE `item`.`item_restrict` = 0

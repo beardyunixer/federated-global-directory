@@ -103,6 +103,28 @@ function create_sys_channel() {
 		'xchanflags' => XCHAN_FLAGS_SYSTEM
 	));
 }
+function create_spam_channel() {
+	if (get_spam_channel())
+		return;
+
+	// Ensure that there is a host keypair.
+
+	if ((! get_config('system', 'pubkey')) && (! get_config('system', 'prvkey'))) {
+		require_once('include/crypto.php');
+		$hostkey = new_keypair(4096);
+		set_config('system', 'pubkey', $hostkey['pubkey']);
+		set_config('system', 'prvkey', $hostkey['prvkey']);
+	}
+
+	create_identity(array(
+		'account_id' => 'xxx',  // This will create an identity with an (integer) account_id of 0, but account_id is required
+		'nickname' => 'spam',
+		'name' => 'Spam',
+		'pageflags' => PAGE_SPAM,
+		'publish' => 0,
+		'xchanflags' => XCHAN_FLAGS_SPAM
+	));
+}
 
 
 /**
@@ -113,6 +135,17 @@ function create_sys_channel() {
 function get_sys_channel() {
 	$r = q("select * from channel left join xchan on channel_hash = xchan_hash where (channel_pageflags & %d)>0 limit 1",
 		intval(PAGE_SYSTEM)
+	);
+
+	if ($r)
+		return $r[0];
+
+	return false;
+}
+
+function get_spam_channel() {
+	$r = q("select * from channel left join xchan on channel_hash = xchan_hash where (channel_pageflags & %d)>0 limit 1",
+		intval(PAGE_SPAM)
 	);
 
 	if ($r)
@@ -134,6 +167,17 @@ function is_sys_channel($channel_id) {
 	);
 
 	if (($r) && ($r[0]['channel_pageflags'] & PAGE_SYSTEM))
+		return true;
+
+	return false;
+}
+
+function is_spam_channel($channel_id) {
+	$r = q("select channel_pageflags from channel where channel_id = %d limit 1",
+		intval($channel_id)
+	);
+
+	if (($r) && ($r[0]['channel_pageflags'] & PAGE_SPAM))
 		return true;
 
 	return false;
@@ -329,7 +373,7 @@ function create_identity($arr) {
 		dbesc($a->get_baseurl() . "/photo/profile/m/{$newuid}"),
 		dbesc($a->get_baseurl() . "/photo/profile/s/{$newuid}"),
 		dbesc($ret['channel']['channel_address'] . '@' . get_app()->get_hostname()),
-		dbesc(z_root() . '/channel/' . $ret['channel']['channel_address']),
+		dbesc(z_root() . '/about/' . $ret['channel']['channel_address']),
 		dbesc(z_root() . '/follow?f=&url=%s'),
 		dbesc(z_root() . '/poco/' . $ret['channel']['channel_address']),
 		dbesc($ret['channel']['channel_name']),
@@ -1304,7 +1348,7 @@ function advanced_profile(&$a) {
 		if($a->profile['with'])
 			$profile['marital']['with'] = bbcode($a->profile['with']);
 
-		if(strlen($a->profile['howlong']) && $a->profile['howlong'] !== NULL_DATE) {
+		if(strlen($a->profile['howlong']) && $a->profile['howlong'] > NULL_DATE) {
 			$profile['howlong'] = relative_date($a->profile['howlong'], t('for %1$d %2$s'));
 		}
 

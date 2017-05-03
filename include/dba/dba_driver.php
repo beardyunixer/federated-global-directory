@@ -56,7 +56,7 @@ function dba_factory($server, $port,$user,$pass,$db,$dbtype,$install = false) {
 abstract class dba_driver {
 	// legacy behavior
 	const INSTALL_SCRIPT='install/schema_mysql.sql';
-	const NULL_DATE = '0000-00-00 00:00:00';
+	const NULL_DATE = '0001-01-01 00:00:00';
 	const UTC_NOW = 'UTC_TIMESTAMP()';
 
 	protected $debug = 0;
@@ -244,12 +244,11 @@ function dbunescbin($str) {
 }
 
 function dbescdate($date) {
-	if(ACTIVE_DBTYPE == DBTYPE_POSTGRES && $date === '0000-00-00 00:00:00') {
-		$date = NULL_DATE;
-	} else if(ACTIVE_DBTYPE != DBTYPE_POSTGRES && $date === '0001-01-01 00:00:00') {
-		$date = NULL_DATE;
-	}
-	return $date;
+	//Really not sure about this...If everything sets on fire, this is probably
+	//where and why.
+	if(($date === '0000-00-00 00:00:00') || ($date === '0001-01-01 00:00:00'))
+		return $dba->escape(NULL_DATE);
+	return $dba->escape($date);
 }
 
 function db_quoteinterval($txt) {
@@ -352,11 +351,8 @@ function dbq($sql) {
 
 function dbesc_array_cb(&$item, $key) {
 	if(is_string($item)) {
-		if($item == '0000-00-00 00:00:00' && ACTIVE_DBTYPE == DBTYPE_POSTGRES)
-			$item = '0001-01-01 00:00:00';
-		else if($item == '0001-01-01 00:00:00' && ACTIVE_DBTYPE == DBTYPE_MYSQL)
-			$item = '0000-00-00 00:00:00';
-
+		if(($item == '0000-00-00 00:00:00') || ($item == '0001-01-01 00:00:00'))
+			$item = NULL_DATE;
 		$item = dbesc($item);
 	}
 }
