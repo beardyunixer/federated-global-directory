@@ -42,6 +42,7 @@ function poller_run($argv, $argc){
 
 	proc_run('php',"include/queue.php");
 
+
 	// maintenance for mod sharedwithme - check for updated items and remove them
 
 	require_once('include/sharedwithme.php');
@@ -153,12 +154,6 @@ function poller_run($argv, $argc){
 			 *
 			 */
 
-			// Once a week poll a Friendica directory for anything we've missed.
-		if($dirmode === DIRECTORY_MODE_SECONDARY || $dirmode === DIRECTORY_MODE_PRIMARY) {
-			$date = strtotime(datetime_convert('UTC','UTC','now - 7 days'));
-			proc_run('php','include/friendicadirpull.php','pull','since',$date);
-		}
-
 
 			call_hooks('cron_weekly',datetime_convert());
 
@@ -177,30 +172,6 @@ function poller_run($argv, $argc){
 			q("delete from xlink where xlink_updated < %s - INTERVAL %s and xlink_static = 0 ",
 				db_utcnow(), db_quoteinterval('14 DAY')
 			);
-
-			// Once a week, find any photo that hasn't been updated for 30 days, and update it.
-			// This can probably replace the related, but different check for badly imported
-			// photos below - but we also need to update the photos of non-contacts, which is
-			// what this does.
-
-			$r = q("select xchan_photo_l, xchan_hash from xchan where xchan_photo_date < %s - INTERVAL %s",
-				db_utcnow(), 
-				db_quoteinterval('30 DAY')
-			);
-			if($r) {
-			require_once('include/photo/photo_driver.php');
-			foreach($r as $rr) {
-				$photos = import_profile_photo($rr['xchan_photo_l'],$rr['xchan_hash']);
-				$x = q("update xchan set xchan_photo_l = '%s', xchan_photo_m = '%s', xchan_photo_s = '%s', xchan_photo_mimetype = '%s'
-					where xchan_hash = '%s'",
-					dbesc($photos[0]),
-					dbesc($photos[1]),
-					dbesc($photos[2]),
-					dbesc($photos[3]),
-					dbesc($rr['xchan_hash'])
-					);
-				}
-			}
 
 			$dirmode = intval(get_config('system','directory_mode'));
 			if($dirmode === DIRECTORY_MODE_SECONDARY || $dirmode === DIRECTORY_MODE_PRIMARY) {

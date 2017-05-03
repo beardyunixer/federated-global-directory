@@ -373,7 +373,7 @@ function create_identity($arr) {
 		dbesc($a->get_baseurl() . "/photo/profile/m/{$newuid}"),
 		dbesc($a->get_baseurl() . "/photo/profile/s/{$newuid}"),
 		dbesc($ret['channel']['channel_address'] . '@' . get_app()->get_hostname()),
-		dbesc(z_root() . '/about/' . $ret['channel']['channel_address']),
+		dbesc(z_root() . '/channel/' . $ret['channel']['channel_address']),
 		dbesc(z_root() . '/follow?f=&url=%s'),
 		dbesc(z_root() . '/poco/' . $ret['channel']['channel_address']),
 		dbesc($ret['channel']['channel_name']),
