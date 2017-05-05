@@ -41,11 +41,13 @@ function z_fetch_url($url, $binary = false, $redirects = 0, $opts = array()) {
 	$ch = @curl_init($url);
 	if(($redirects > 8) || (! $ch)) 
 		return false;
-
 	@curl_setopt($ch, CURLOPT_HEADER, true);
 	@curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 	@curl_setopt($ch, CURLOPT_CAINFO, get_capath());
-	@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+	if (get_config('system','allow_selfsigned'))
+		@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	else
+		@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 	@curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
 	@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (compatible; Red)");
 
